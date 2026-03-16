@@ -38,7 +38,8 @@ Qimen Dunjia is based on astronomical observations, and consists of various aspe
 	kinqimen.Qimen(year, month, day, hour).overall() (時家奇門 + 金函日家)
 	
 ```
-
+## **4. 微信公眾號**
+![alt text](https://raw.githubusercontent.com/kentang2017/kinliuren/refs/heads/master/pic/%E5%9C%96%E7%89%87_20260316084147.jpg)
 
 
 

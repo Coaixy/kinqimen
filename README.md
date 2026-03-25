@@ -1,45 +1,160 @@
-﻿# **Python Qimendunjia Kinqimen Python 奇門遁甲 堅奇門**
+﻿<div align="center">
 
-![alt text](https://github.com/kentang2017/kinqimen/blob/master/pic/Untitled-22.png)
-簡單金函玉鏡、時家奇門、刻家奇門的奇門遁甲起盤 A simple python package of Qimendunjia in Chinese hour-based system, minute-based system and golden letter jade mirror style Qimendunjia for prediction.
+# 🔮 堅奇門 · KinQiMen
 
-堅奇門排盤 https://kinqimen.streamlitapp.com
+### Python 奇門遁甲排盤系統 | Python Qimen Dunjia Divination System
 
-[![Python](https://img.shields.io/pypi/pyversions/kinqimen)](https://pypi.org/project/kinqimen/)
-[![PIP](https://img.shields.io/pypi/v/kinqimen)](https://pypi.org/project/kinqimen/)
-[![Downloads](https://img.shields.io/pypi/dm/kinqimen)](https://pypi.org/project/kinqimen/)
-[![TG](https://img.shields.io/badge/chat-on%20telegram-blue)](https://t.me/haizhonggum)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?logo=paypal&style=flat-square)](https://www.paypal.me/kinyeah)&nbsp;
+![banner](https://github.com/kentang2017/kinqimen/blob/master/pic/Untitled-22.png)
 
+**千年玄術，一行代碼 · Ancient Wisdom, Modern Code**
 
+[![Python](https://img.shields.io/pypi/pyversions/kinqimen?label=Python&logo=python)](https://pypi.org/project/kinqimen/)
+[![PIP Version](https://img.shields.io/pypi/v/kinqimen?label=PyPI&logo=pypi)](https://pypi.org/project/kinqimen/)
+[![Downloads](https://img.shields.io/pypi/dm/kinqimen?label=Downloads&logo=pypi&color=blue)](https://pypi.org/project/kinqimen/)
+[![License](https://img.shields.io/github/license/kentang2017/kinqimen?label=License)](LICENSE)
+[![Telegram](https://img.shields.io/badge/Chat-Telegram-blue?logo=telegram)](https://t.me/haizhonggum)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?logo=paypal)](https://www.paypal.me/kinyeah)
 
+**🌐 線上排盤 · Live Demo → [kinqimen.streamlitapp.com](https://kinqimen.streamlitapp.com)**
 
+</div>
 
-## **1. 導讀 Introduction**︰
-奇門遁甲與大六壬、太乙神數並稱三式。為中國神秘學中預測學的一個特有門類。乃利用洛書軌跡，九宮八卦以及五行相生相剋的道理，來預測地理方向的優劣，進而規劃一個人的行程，最終達到對自己最有利的目的，為算命相術所兼用。奇門遁甲以乙、丙、丁稱為三奇；以開、休、生、傷、杜、景、驚、死稱為八門，故名「奇門」。天干中「甲」最尊貴而不顯露，六甲(甲子、甲戌、甲申、甲午、甲辰、甲寅)常隱藏於「戊、己、庚、辛、壬、癸」六儀之內，三奇、六儀分布九宮，而甲不獨占一宮，故名「遁甲」。在古代民間流傳只有帝王附近如軍師、欽天監、國師等重要大臣才通曉奇門遁甲之術。
+---
 
-Qimen Dunjia is an ancient form of divination from China. It is one of the Three Styles (三式; sānshì; 'three rites') of Chinese divination, with DaLiuRen and TaiYi Shen Shu. Over the centuries of Chinese history, Qimen Dunjia grew in popularity and was expanded to include a number of other types of divination, including medical divination, matchmaking, childbirth, travel, personal fortunes, and today includes contemporary applications, most notably that of business and finance. 
+## 📖 導讀 · Introduction
 
-Qimen Dunjia is based on astronomical observations, and consists of various aspects of Chinese metaphysics, including the doctrines of yin and yang, five elements, the eight trigrams, the ten Heavenly Stems and the twelve Earthly Branches, as well as the twenty-four solar terms. The Qimen Dunjia cosmic board consists of a 3 × 3 magic square of nine palaces (九宫), which includes a Heaven and Earth plate, a spirit plate, eight gates and a star plate. The various symbols rotate around the palaces with each double-hour of the day, making a total of 1,080 different configurations of the Qimen Dunjia cosmic board. These situations (局; jú) are recycled four times per year, and are divided between the Yin and Yang halves of the year. Qimen Dunjia is time-sensitive. The analyst makes reference to the configuration of the cosmic board at the time when a question is posed, or for birth times of individuals or corporate entities, such as businesses or nations. At times, the same or very similar configurations of the cosmic board will appear in relation to the same series of questions or problems.
+> 奇門遁甲與大六壬、太乙神數並稱**中國三大神秘預測術**，歷代只有天子身邊的國師、軍師方能習得。
+>
+> *Qimen Dunjia is one of the legendary **Three Arts** of Chinese metaphysical divination — historically reserved for imperial advisors and military strategists.*
 
-## **2. 安裝套件 Installation**
+**奇門遁甲**（Qimen Dunjia）乃中國古代最高深的預測學之一。以洛書九宮為盤，配合陰陽五行、八卦、天干地支及二十四節氣，構建出一個時空旋轉的宇宙能量矩陣。全盤共有**1,080種局**，每個時辰輪換，精準捕捉天地人三才之氣，廣泛應用於決策、方位、商業及個人趨吉避凶。
 
-```python
-	pip install sxtwl
-	pip install kinqimen
+Qimen Dunjia is an ancient Chinese cosmic divination art that maps heaven, earth and human energies onto a 3×3 magic square of **Nine Palaces**. Rotating through **1,080 unique configurations** — one per double-hour — it incorporates yin-yang theory, the Five Elements, Eight Trigrams, Heavenly Stems, Earthly Branches, and the 24 Solar Terms. Used for centuries in military strategy, business decisions, travel planning, and personal forecasting.
+
+---
+
+## ✨ 功能特色 · Features
+
+| 功能 Feature | 說明 Description |
+|---|---|
+| 🕐 **時家奇門** Hour-based Qimen | 以時辰起盤，最常用之傳統起盤方式 · Classic hour-based divination chart |
+| ⏱ **刻家奇門** Minute-based Qimen | 以分鐘精算，適合精確預測 · High-precision minute-level chart |
+| 📜 **金函玉鏡** Golden Mirror | 金函日家奇門，古典日家排盤 · Classic daily Golden Letter Jade Mirror style |
+| 🔄 **拆補 / 置閏** Two Calculation Methods | 支援拆補法及置閏法，靈活對應各派 · Supports both Chabu & Zhirun methods |
+| 🖥 **Web 排盤介面** Web UI | Streamlit 互動式線上排盤 · Interactive online chart via Streamlit |
+| 🐍 **純 Python** Pure Python | 輕量易用，可嵌入任何 Python 項目 · Lightweight and easy to integrate |
+
+---
+
+## 🚀 安裝 · Installation
+
+```bash
+pip install sxtwl
+pip install kinqimen
 ```
 
-## **3. 起課方式 Quickstart**
-```python
-	from kinqimen import kinqimen
+---
 
-	kinqimen.Qimen(year, month, day, hour).pan(1) #1:拆補 2:置閏
-	kinqimenQimen(year, month, day, hour).gpan() (金函日家)
-	kinqimen.Qimen(year, month, day, hour).overall() (時家奇門 + 金函日家)
-	
+## ⚡ 快速上手 · Quickstart
+
+```python
+from kinqimen import kinqimen
+
+year, month, day, hour, minute = 2024, 6, 15, 14, 30
+
+# 時家奇門（拆補法） | Hour-based Qimen (Chabu method)
+result = kinqimen.Qimen(year, month, day, hour, minute).pan(1)   # 1=拆補, 2=置閏
+
+# 刻家奇門（置閏法） | Minute-based Qimen (Zhirun method)
+result = kinqimen.Qimen(year, month, day, hour, minute).pan_minute(2)
+
+# 金函玉鏡日家奇門 | Golden Letter Jade Mirror daily chart
+result = kinqimen.Qimen(year, month, day, hour, minute).gpan()
+
+# 綜合排盤（時家 + 金函） | Combined chart (Hour-based + Golden Mirror)
+result = kinqimen.Qimen(year, month, day, hour, minute).overall()
 ```
-## **4. 微信公眾號**
-![alt text](https://raw.githubusercontent.com/kentang2017/kinliuren/refs/heads/master/pic/%E5%9C%96%E7%89%87_20260316084147.jpg)
+
+---
+
+## 🗺 排盤示意 · Chart Preview
+
+```
+＼  天蓬神　 │  天芮神　 │  天沖神　／
+ ─────────┬──┴─────┬─────┴──────────
+ 　│　　螣蛇　　　 │　　太陰　　　 │　　六合　　　 │
+ 　│　　休門　　天乙│　　死門　　天英│　　傷門　　天柱│
+ 　│　　天蓬　　坎一│　　天芮　　坤二│　　天沖　　震三│
+ 辰├───────────┼───────────┼───────────┤酉
+ 勾│　　白虎　　　 │　　　　　　 │　　玄武　　　 │陳
+ 陳│　　杜門　　天沖│　　　　　戊  │　　開門　　天任│武
+ 　│　　天輔　　巽四│　　　　　　 │　　天心　　乾六│
+ 　├───────────┼───────────┼───────────┤
+ 　│　　朱雀　　　 │　　九地　　　 │　　九天　　　 │
+ 卯│　　景門　　天任│　　生門　　天柱│　　驚門　　天芮│戌
+ 　│　　天英　　離九│　　天心　　兌七│　　天蓬　　艮八│
+ ／─────────┬──┴─────┬─────┴──┬────────＼
+／  寅　　　 │  丑　　 │  子　　 │  　 亥　　 ＼
+```
+
+---
+
+## 📦 依賴套件 · Dependencies
+
+- [`sxtwl`](https://pypi.org/project/sxtwl/) — 中國農曆/節氣計算 · Chinese lunar calendar & solar terms
+- [`kinliuren`](https://pypi.org/project/kinliuren/) — 大六壬排盤 · Da Liu Ren divination
+- [`streamlit`](https://streamlit.io/) — Web 互動介面 · Web UI framework
+- [`pendulum`](https://pendulum.eustace.io/) — 時區處理 · Timezone handling
+
+---
+
+## 🌐 線上排盤 · Web App
+
+無需安裝，直接在瀏覽器中體驗奇門排盤：
+
+**Try it instantly in your browser — no installation needed:**
+
+👉 **[https://kinqimen.streamlitapp.com](https://kinqimen.streamlitapp.com)**
+
+---
+
+## 💬 社群 · Community
+
+| 平台 Platform | 連結 Link |
+|---|---|
+| 💬 Telegram 討論群 | [@haizhonggum](https://t.me/haizhonggum) |
+| 🐛 問題回報 Issues | [GitHub Issues](https://github.com/kentang2017/kinqimen/issues) |
+| ☕ 支持作者 Donate | [PayPal](https://www.paypal.me/kinyeah) |
+
+---
+
+## 📣 微信公眾號 · WeChat Official Account
+
+<div align="center">
+
+![WeChat QR](https://raw.githubusercontent.com/kentang2017/kinliuren/refs/heads/master/pic/%E5%9C%96%E7%89%87_20260316084147.jpg)
+
+*掃碼關注，獲取更多玄學資訊 · Scan to follow for more metaphysics content*
+
+</div>
+
+---
+
+## 📄 授權 · License
+
+本項目以 MIT 授權條款開源 · This project is open-sourced under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+
+**如果這個項目對您有幫助，歡迎點亮 ⭐ Star！**
+
+*If you find this project useful, please give it a ⭐ Star — it means a lot!*
+
+Made with ❤️ by [kentang2017](https://github.com/kentang2017)
+
+</div>
 
 
 

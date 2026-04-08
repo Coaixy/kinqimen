@@ -151,7 +151,7 @@ def generate_closed_sixwu_svg(xun_head: str, version: str = "演義版") -> str:
 
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" '
-        f'width="420" height="420" style="display:block;margin:0 auto">'
+        f'style="width:100%;height:auto;display:block;margin:0 auto">'
         f'<defs>'
         f'<marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" '
         f'markerWidth="6" markerHeight="6" orient="auto">'
@@ -252,7 +252,7 @@ def render_pan(y, m, d, h, minute, is_shijia=True):
 
         svg_str = generate_closed_sixwu_svg(xun_head_jiazi, v)
         st.markdown(
-            f'<div style="text-align:center;padding:12px 0">{svg_str}</div>',
+            f'<div style="max-width:420px;width:100%;margin:0 auto;padding:12px 0">{svg_str}</div>',
             unsafe_allow_html=True,
         )
 

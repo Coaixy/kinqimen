@@ -4,7 +4,7 @@
 
 ### Python 奇門遁甲排盤系統 | Python Qimen Dunjia Divination System
 
-![banner](https://github.com/kentang2017/kinqimen/blob/master/pic/Untitled-22.png)
+![banner](https://github.com/kentang2017/kinqimen/blob/master/assets/banner.png)
 
 **千年玄術，一行代碼 · Ancient Wisdom, Modern Code**
 

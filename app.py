@@ -45,7 +45,7 @@ CEREBRAS_MODEL_DESCRIPTIONS = {
     "deepseek-r1-distill-llama-70b": "Cerebras: DeepSeek distilled model.",
 }
 
-SYSTEM_PROMPTS_FILE = "system_prompts.json"
+SYSTEM_PROMPTS_FILE = "data/system_prompts.json"
 
 def load_system_prompts():
     DEFAULT_SYSTEM_PROMPT = (

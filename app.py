@@ -25,12 +25,12 @@ def st_capture(output_func):
         yield
 
 def load_local_md(filepath):
-    """讀取本地 Markdown 文件，若文件不存在則回傳提示訊息。"""
+    """讀取本地 Markdown 檔案，若檔案不存在則回傳提示訊息。"""
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
-        return f"⚠️ 找不到文件：{filepath}"
+        return f"⚠️ 找不到檔案：{filepath}"
 
 # ------------------- AI 相關常數與函數 -------------------
 CEREBRAS_MODEL_OPTIONS = [

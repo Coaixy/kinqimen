@@ -32,8 +32,13 @@ class CerebrasClient:
                 )
                 return chat_completion
             except Exception as e:
+                status_code = getattr(e, "status_code", None)
                 error_str = str(e)
-                is_rate_limit = "429" in error_str or "rate" in error_str.lower() or "quota" in error_str.lower()
+                is_rate_limit = (
+                    status_code == 429
+                    or "429" in error_str
+                    or "quota" in error_str.lower()
+                )
                 if is_rate_limit and attempt < MAX_RETRIES:
                     last_exception = e
                     delay = BASE_RETRY_DELAY * (2 ** attempt)
@@ -41,9 +46,10 @@ class CerebrasClient:
                     continue
                 if is_rate_limit:
                     raise RateLimitError(
-                        "已超出 Cerebras API 每日 Token 配額限制。"
-                        "建議：1) 降低「最大 Tokens」設定值；"
-                        "2) 選擇較小的模型（如 llama3.1-8b）；"
+                        "已超出 Cerebras API 每日 Token 配額限制。\n"
+                        "建議：\n"
+                        "1) 降低「最大 Tokens」設定值；\n"
+                        "2) 選擇較小的模型（如 llama3.1-8b）；\n"
                         "3) 等待配額重置後再試。"
                     ) from e
                 raise

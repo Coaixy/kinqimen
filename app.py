@@ -10,7 +10,7 @@ from contextlib import contextmanager, redirect_stdout
 import kinqimen
 from kinliuren import kinliuren
 import config
-from cerebras_client import CerebrasClient, DEFAULT_MODEL as DEFAULT_CEREBRAS_MODEL
+from cerebras_client import CerebrasClient, RateLimitError, DEFAULT_MODEL as DEFAULT_CEREBRAS_MODEL
 
 # ------------------- 工具 -------------------
 @contextmanager
@@ -254,10 +254,11 @@ with st.sidebar:
     if st.toggle("⚙️ 進階設置", key="qimen_advanced_settings_toggle"):
         st.session_state.qimen_max_tokens = st.slider(
             "最大 Tokens",
-            40000, 200000,
-            st.session_state.get("qimen_max_tokens", 200000),
+            1024, 32768,
+            st.session_state.get("qimen_max_tokens", 8192),
+            step=1024,
             key="qimen_max_tokens_slider",
-            help="控制AI回應的最大長度",
+            help="控制AI回應的最大長度（較低的值可減少配額消耗）",
         )
         st.session_state.qimen_temperature = st.slider(
             "Temperature",
@@ -573,13 +574,15 @@ with pan:
                         api_params = {
                             "messages": messages,
                             "model": selected_model,
-                            "max_tokens": st.session_state.get("qimen_max_tokens", 200000),
+                            "max_tokens": st.session_state.get("qimen_max_tokens", 8192),
                             "temperature": st.session_state.get("qimen_temperature", 0.7),
                         }
                         response = client.get_chat_completion(**api_params)
                         raw_response = response.choices[0].message.content
                         with st.expander("🤖 AI分析結果", expanded=True):
                             st.markdown(raw_response)
+                    except RateLimitError as e:
+                        st.error(f"⚠️ {e}")
                     except Exception as e:
                         st.error(f"調用AI時發生錯誤：{e}")
 

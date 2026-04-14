@@ -1,7 +1,6 @@
 import math
 import os
 import json
-import urllib.request
 import streamlit as st
 import pendulum as pdlm
 import datetime, pytz
@@ -25,9 +24,13 @@ def st_capture(output_func):
         stdout.write = new_write
         yield
 
-def fetch_md(file):
-    url = f'https://raw.githubusercontent.com/kentang2017/kinliuren/master/{file}'
-    return urllib.request.urlopen(url).read().decode("utf-8")
+def load_local_md(filepath):
+    """讀取本地 Markdown 文件，若文件不存在則回傳提示訊息。"""
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return f"⚠️ 找不到文件：{filepath}"
 
 # ------------------- AI 相關常數與函數 -------------------
 CEREBRAS_MODEL_OPTIONS = [
@@ -117,10 +120,24 @@ def format_qimen_results_for_prompt(q, gz_str, jq_str, lunar_info, paipan_info, 
 st.set_page_config(page_title="堅奇門 - 奇門排盤", page_icon="🧮", layout="wide")
 pan, example, guji, log, links = st.tabs(['🧮 排盤', '📜 案例', '📚 古籍', '🆕 更新', '🔗 連結'])
 
-with links:
-    st.markdown(fetch_md("update.md"), unsafe_allow_html=True)
+with example:
+    st.subheader("📜 案例")
+    st.info("案例內容即將更新，敬請期待。")
+
+with guji:
+    st.markdown(load_local_md("docs/guji.md"), unsafe_allow_html=True)
+
 with log:
-    st.markdown(fetch_md("log.md"), unsafe_allow_html=True)
+    st.markdown(load_local_md("docs/log.md"), unsafe_allow_html=True)
+
+with links:
+    st.subheader("🔗 相關連結")
+    st.markdown("""
+- 💬 [Telegram 討論群](https://t.me/haizhonggum)
+- 🐛 [GitHub Issues](https://github.com/kentang2017/kinqimen/issues)
+- 📦 [PyPI - kinqimen](https://pypi.org/project/kinqimen/)
+- ☕ [支持作者 (PayPal)](https://www.paypal.me/kinyeah)
+""")
 
 # ------------------- 側邊欄 -------------------
 with st.sidebar:

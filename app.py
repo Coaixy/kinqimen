@@ -1,4 +1,6 @@
 import math
+import os
+import json
 import urllib.request
 import streamlit as st
 import pendulum as pdlm
@@ -9,6 +11,7 @@ from contextlib import contextmanager, redirect_stdout
 import kinqimen
 from kinliuren import kinliuren
 import config
+from cerebras_client import CerebrasClient, DEFAULT_MODEL as DEFAULT_CEREBRAS_MODEL
 
 # ------------------- 工具 -------------------
 @contextmanager
@@ -25,6 +28,88 @@ def st_capture(output_func):
 def fetch_md(file):
     url = f'https://raw.githubusercontent.com/kentang2017/kinliuren/master/{file}'
     return urllib.request.urlopen(url).read().decode("utf-8")
+
+# ------------------- AI 相關常數與函數 -------------------
+CEREBRAS_MODEL_OPTIONS = [
+    "qwen-3-235b-a22b-instruct-2507",
+    "llama-4-scout-17b-16e-instruct",
+    "llama3.1-8b",
+    "llama-3.3-70b",
+    "deepseek-r1-distill-llama-70b",
+]
+CEREBRAS_MODEL_DESCRIPTIONS = {
+    "qwen-3-235b-a22b-instruct-2507": "Cerebras: Fast inference, great for rapid iteration.",
+    "llama-4-scout-17b-16e-instruct": "Cerebras: Optimized for guided workflows.",
+    "llama3.1-8b": "Cerebras: Light and fast for quick tasks.",
+    "llama-3.3-70b": "Cerebras: Most capable for complex reasoning.",
+    "deepseek-r1-distill-llama-70b": "Cerebras: DeepSeek distilled model.",
+}
+
+SYSTEM_PROMPTS_FILE = "system_prompts.json"
+
+def load_system_prompts():
+    DEFAULT_SYSTEM_PROMPT = (
+        "你是一位奇門遁甲大師，精通《奇門遁甲統宗》、《奇門遁甲秘笈大全》、《煙波釣叟歌》等古籍及歷史案例。"
+        "請根據提供的奇門遁甲排盤數據，進行以下操作：\n"
+        "1. 解釋盤局的關鍵要素（九宮、天盤、地盤、九星、八門、八神、值符值使等）。\n"
+        "2. 結合奇門遁甲理論，分析盤局的吉凶格局和潛在影響。\n"
+        "3. 詳細評估各宮位的組合關係。\n"
+        "4. 提供實用的建議或應對策略。\n"
+        "請以清晰的結構（分段、標題）呈現，語言專業且易懂，適當引用歷史案例或經典理論。"
+    )
+    try:
+        with open(SYSTEM_PROMPTS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        default_data = {
+            "prompts": [{"name": "奇門遁甲大師", "content": DEFAULT_SYSTEM_PROMPT}],
+            "selected": "奇門遁甲大師",
+        }
+        with open(SYSTEM_PROMPTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(default_data, f, indent=2, ensure_ascii=False)
+        return default_data
+
+def save_system_prompts(prompts_data):
+    try:
+        with open(SYSTEM_PROMPTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(prompts_data, f, indent=2, ensure_ascii=False)
+        return True
+    except Exception as e:
+        st.error(f"儲存系統提示時發生錯誤：{e}")
+        return False
+
+def format_qimen_results_for_prompt(q, gz_str, jq_str, lunar_info, paipan_info, is_shijia, y, m, d, h, minute):
+    """Format Qi Men Dun Jia chart data into a text prompt for AI analysis."""
+    eg_keys = list("巽離坤震兌艮坎乾")
+    lines = [
+        "以下是奇門遁甲排盤的計算結果，請根據這些數據提供詳細的分析和解釋：",
+        f"日期時間：{y}年{m}月{d}日 {h}時{minute}分",
+        f"起盤方式：{'時家奇門' if is_shijia else '刻家奇門'} | 排盤方式：{paipan_info}",
+        f"干支：{q.get('干支', '')}",
+        f"排局：{q.get('排局', '')}",
+        f"節氣：{jq_str}",
+        f"農曆：{lunar_info}",
+    ]
+    zfzs = q.get("值符值使", {})
+    if zfzs:
+        zf = zfzs.get("值符星宮", ["", ""])
+        zs = zfzs.get("值使門宮", ["", ""])
+        lines.append(f"值符星宮：天{zf[1]}宮")
+        lines.append(f"值使門宮：{zs[0]}門{zs[1]}宮")
+
+    lines.append(f"\n旬首：{q.get('旬首', '')}")
+
+    lines.append("\n【九宮盤局】")
+    for gua in eg_keys:
+        dp = q.get("地盤", {}).get(gua, "")
+        tp = q.get("天盤", {}).get(gua, "")
+        shen = q.get("神", {}).get(gua, "")
+        men = q.get("門", {}).get(gua, "")
+        xing = q.get("星", {}).get(gua, "")
+        lines.append(f"  {gua}宮：地盤={dp}，天盤={tp}，九星={xing}，八門={men}，八神={shen}")
+    lines.append(f"  中宮：地盤={q.get('地盤', {}).get('中', '')}")
+
+    return "\n\n".join(lines)
 
 # ------------------- 頁面設定 -------------------
 st.set_page_config(page_title="堅奇門 - 奇門排盤", page_icon="🧮", layout="wide")
@@ -46,6 +131,123 @@ with st.sidebar:
 
     is_shijia = method == '時家奇門'
     pai = 2 if paipan == '置閏' else 1   # 1=拆補 2=置閏
+
+    # ------------------- AI 設置 -------------------
+    st.markdown("---")
+    st.header("🤖 AI設置")
+
+    selected_model = st.selectbox(
+        "AI 模型",
+        options=CEREBRAS_MODEL_OPTIONS,
+        index=0,
+        key="cerebras_model_selector",
+        help="\n".join(f"• {k}: {v}" for k, v in CEREBRAS_MODEL_DESCRIPTIONS.items()),
+    )
+
+    system_prompts_data = load_system_prompts()
+    prompts_list = system_prompts_data.get("prompts", [])
+    prompt_names = [p["name"] for p in prompts_list]
+    selected_prompt = system_prompts_data.get("selected")
+
+    if prompt_names:
+        selected_index = 0
+        if selected_prompt in prompt_names:
+            selected_index = prompt_names.index(selected_prompt)
+
+        selected_name = st.selectbox(
+            "選擇系統提示",
+            options=prompt_names,
+            index=selected_index,
+            key="qimen_system_prompt_selector",
+            help="選擇用於AI模型的系統提示，指導其分析奇門遁甲排盤結果",
+        )
+
+        system_prompts_data["selected"] = selected_name
+
+        selected_content = ""
+        for prompt in prompts_list:
+            if prompt["name"] == selected_name:
+                selected_content = prompt["content"]
+                break
+
+        if "qimen_system_prompt" not in st.session_state:
+            st.session_state.qimen_system_prompt = selected_content
+        elif selected_name != st.session_state.get("last_selected_qimen_prompt"):
+            st.session_state.qimen_system_prompt = selected_content
+
+        st.session_state.last_selected_qimen_prompt = selected_name
+
+        new_content = st.text_area(
+            "編輯系統提示",
+            value=st.session_state.qimen_system_prompt,
+            height=150,
+            placeholder="範例：你是一位奇門遁甲專家，根據排盤數據提供詳細分析...",
+            key="qimen_system_editor",
+        )
+        st.session_state.qimen_system_prompt = new_content
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💾 更新提示", key="update_qimen_prompt_button"):
+                for prompt in prompts_list:
+                    if prompt["name"] == selected_name:
+                        prompt["content"] = new_content
+                        break
+                if save_system_prompts(system_prompts_data):
+                    st.toast(f"已更新提示：{selected_name}")
+        with col2:
+            if st.button("🗑️ 刪除提示", key="delete_qimen_prompt_button",
+                         disabled=len(prompts_list) <= 1):
+                prompts_list = [p for p in prompts_list if p["name"] != selected_name]
+                system_prompts_data["prompts"] = prompts_list
+                if selected_name == selected_prompt and prompts_list:
+                    system_prompts_data["selected"] = prompts_list[0]["name"]
+                if save_system_prompts(system_prompts_data):
+                    st.toast(f"已刪除提示：{selected_name}")
+                    st.rerun()
+
+    if "qimen_form_key_suffix" not in st.session_state:
+        st.session_state.qimen_form_key_suffix = 0
+
+    name_key = f"new_qimen_prompt_name_{st.session_state.qimen_form_key_suffix}"
+    content_key = f"new_qimen_prompt_content_{st.session_state.qimen_form_key_suffix}"
+
+    with st.expander("➕ 新增系統提示", expanded=False):
+        new_prompt_name = st.text_input("提示名稱", key=name_key)
+        new_prompt_content = st.text_area(
+            "提示內容",
+            height=100,
+            placeholder="輸入AI分析指令...",
+            key=content_key,
+        )
+        if st.button("新增提示", key="add_qimen_prompt_button",
+                     disabled=not new_prompt_name or not new_prompt_content):
+            if new_prompt_name in prompt_names:
+                st.error(f"提示名稱「{new_prompt_name}」已存在")
+            else:
+                prompts_list.append({"name": new_prompt_name, "content": new_prompt_content})
+                system_prompts_data["prompts"] = prompts_list
+                if save_system_prompts(system_prompts_data):
+                    st.session_state.qimen_form_key_suffix += 1
+                    st.toast(f"已新增提示：{new_prompt_name}")
+                    st.rerun()
+
+    if st.toggle("⚙️ 進階設置", key="qimen_advanced_settings_toggle"):
+        st.session_state.qimen_max_tokens = st.slider(
+            "最大 Tokens",
+            40000, 200000,
+            st.session_state.get("qimen_max_tokens", 200000),
+            key="qimen_max_tokens_slider",
+            help="控制AI回應的最大長度",
+        )
+        st.session_state.qimen_temperature = st.slider(
+            "Temperature",
+            0.0, 1.5,
+            st.session_state.get("qimen_temperature", 0.7),
+            step=0.05,
+            key="qimen_temperature_slider",
+            help="控制AI回應的創造性（0=精確，1.5=高創造性）",
+        )
 
 # ------------------- 共用函數 -------------------
 eg = list("巽離坤震兌艮坎乾")
@@ -290,6 +492,8 @@ def render_pan(y, m, d, h, minute, is_shijia=True):
 - 若無法翌日解封，三日內必解，否則反傷自身
 """)
 
+    return q, jq, is_shijia
+
 
 # 顯示原始 dict
 
@@ -297,23 +501,66 @@ def render_pan(y, m, d, h, minute, is_shijia=True):
 with pan:
     st.header('堅奇門排盤')
 
+    # Track chart parameters for AI analysis
+    chart_params = {}
+
     output = st.empty()
     with st_capture(output.code):
         # 即時盤（預設）
         if instant or (not manual and not instant):  # 頁面初載也顯示即時
             now = datetime.datetime.now(pytz.timezone('Asia/Hong_Kong'))
-            render_pan(now.year, now.month, now.day, now.hour, now.minute, is_shijia=True)
+            q_data, jq_str, _shijia = render_pan(now.year, now.month, now.day, now.hour, now.minute, is_shijia=True)
+            chart_params = {
+                "q": q_data, "jq": jq_str, "is_shijia": _shijia,
+                "y": now.year, "m": now.month, "d": now.day,
+                "h": now.hour, "minute": now.minute,
+            }
 
         # 手動盤
         if manual and pp_time:
             try:
                 h, mnt = map(int, pp_time.split(':'))
-                render_pan(pp_date.year, pp_date.month, pp_date.day, h, mnt, is_shijia)
-            except:
+                q_data, jq_str, _shijia = render_pan(pp_date.year, pp_date.month, pp_date.day, h, mnt, is_shijia)
+                chart_params = {
+                    "q": q_data, "jq": jq_str, "is_shijia": _shijia,
+                    "y": pp_date.year, "m": pp_date.month, "d": pp_date.day,
+                    "h": h, "minute": mnt,
+                }
+            except Exception:
                 st.error("時間格式錯誤，請輸入如 18:30")
 
-
-
-
-
+    # ------------------- AI 分析按鈕 -------------------
+    if chart_params:
+        if st.button("🔍 使用AI分析排盤結果", key="analyze_with_ai"):
+            with st.spinner("AI正在分析奇門遁甲排盤結果..."):
+                cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY", "") or os.getenv("CEREBRAS_API_KEY", "")
+                if not cerebras_api_key:
+                    st.error("CEREBRAS_API_KEY 未設置，請在 .streamlit/secrets.toml 或環境變量中設置。")
+                else:
+                    try:
+                        client = CerebrasClient(api_key=cerebras_api_key)
+                        cp = chart_params
+                        lunar_info = config.lunar_date_d(cp["y"], cp["m"], cp["d"]).get("農曆月", "")
+                        paipan_info = cp["q"].get("排盤方式", "")
+                        qimen_prompt = format_qimen_results_for_prompt(
+                            cp["q"], cp["q"].get("干支", ""), cp["jq"],
+                            lunar_info, paipan_info, cp["is_shijia"],
+                            cp["y"], cp["m"], cp["d"], cp["h"], cp["minute"],
+                        )
+                        messages = [
+                            {"role": "system", "content": st.session_state.get("qimen_system_prompt", "")},
+                            {"role": "user", "content": qimen_prompt},
+                        ]
+                        api_params = {
+                            "messages": messages,
+                            "model": selected_model,
+                            "max_tokens": st.session_state.get("qimen_max_tokens", 200000),
+                            "temperature": st.session_state.get("qimen_temperature", 0.7),
+                        }
+                        response = client.get_chat_completion(**api_params)
+                        raw_response = response.choices[0].message.content
+                        with st.expander("🤖 AI分析結果", expanded=True):
+                            st.markdown(raw_response)
+                    except Exception as e:
+                        st.error(f"調用AI時發生錯誤：{e}")
 

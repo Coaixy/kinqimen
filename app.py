@@ -94,8 +94,10 @@ def format_qimen_results_for_prompt(q, gz_str, jq_str, lunar_info, paipan_info, 
     if zfzs:
         zf = zfzs.get("值符星宮", ["", ""])
         zs = zfzs.get("值使門宮", ["", ""])
-        lines.append(f"值符星宮：天{zf[1]}宮")
-        lines.append(f"值使門宮：{zs[0]}門{zs[1]}宮")
+        if len(zf) > 1:
+            lines.append(f"值符星宮：天{zf[1]}宮")
+        if len(zs) > 1:
+            lines.append(f"值使門宮：{zs[0]}門{zs[1]}宮")
 
     lines.append(f"\n旬首：{q.get('旬首', '')}")
 

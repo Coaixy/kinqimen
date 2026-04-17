@@ -21,6 +21,7 @@ import { calcDayKongShiKong } from "./core/kongday";
 import { shun } from "./core/helpers";
 import { calcMenpo } from "./core/menpo";
 import { calcAllJixing } from "./core/jixing";
+import { buildAnganPan } from "./core/angan";
 
 /**
  * 验证输入参数
@@ -123,7 +124,10 @@ export class Qimen {
     const maStar = calcAllMa(gz.day, gz.hour);
     const changShengYun = buildChangshengYun(skyPan, earthPan, gz.day);
 
-    // Phase 8: 门迫和击刑
+    // Phase 8: 暗干
+    const anganPan = buildAnganPan(juString, zhifuZhishi, earthPan, gz.hour);
+
+    // Phase 9: 门迫和击刑
     const menpo = calcMenpo(doorPan);
     const jixing = calcAllJixing(earthPan, skyPan);
 
@@ -142,6 +146,7 @@ export class Qimen {
       门: doorPan,
       星: starPan,
       神: godPan,
+      暗干: anganPan,
       马星: maStar,
       长生运: changShengYun,
       门迫: menpo,

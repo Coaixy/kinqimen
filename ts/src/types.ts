@@ -85,6 +85,7 @@ export interface HourChabuPan {
   门: Partial<Record<EightGong, string>>;
   星: Partial<Record<EightGong, string>>;
   神: Partial<Record<EightGong, string>>;
+  暗干: Record<Gong, string>;
   马星: MaXing;
   长生运: {
     天盘: Record<string, ChangshengItem>;

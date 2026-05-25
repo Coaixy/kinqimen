@@ -95,13 +95,13 @@ export const JIEQI_CODE: Record<string, string> = {
 };
 
 // 旬空表（孤虚）
-export const GUXU: Record<string, { 孤: string; 虚: string }> = {
-  "甲子": { 孤: "戌亥", 虚: "辰巳" },
-  "甲戌": { 孤: "申酉", 虚: "寅卯" },
-  "甲申": { 孤: "午未", 虚: "子丑" },
-  "甲午": { 孤: "辰巳", 虚: "戌亥" },
-  "甲辰": { 孤: "寅卯", 虚: "申酉" },
-  "甲寅": { 孤: "子丑", 虚: "午未" },
+export const GUXU: Record<string, { gu: string; xu: string }> = {
+  "甲子": { gu: "戌亥", xu: "辰巳" },
+  "甲戌": { gu: "申酉", xu: "寅卯" },
+  "甲申": { gu: "午未", xu: "子丑" },
+  "甲午": { gu: "辰巳", xu: "戌亥" },
+  "甲辰": { gu: "寅卯", xu: "申酉" },
+  "甲寅": { gu: "子丑", xu: "午未" },
 };
 
 // 阳遁地盘天干顺序

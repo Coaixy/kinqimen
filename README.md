@@ -46,9 +46,9 @@ const qimen = new Qimen({
 
 const pan = qimen.pan();
 
-console.log(pan.排局);
-console.log(pan.值符值使);
-console.log(pan.暗干);
+console.log(pan.ju);
+console.log(pan.zhifuZhishi);
+console.log(pan.anganPan);
 ```
 
 ## API
@@ -98,32 +98,32 @@ const pan: HourChabuPan = new Qimen({
 
 ```typescript
 type HourChabuPan = {
-  排盘方式: "拆补";
-  干支: string;
-  旬首: string;
-  旬空: { 日空: string; 时空: string };
-  局日: string;
-  排局: string;
-  节气: string;
-  值符值使: {
-    值符天干: [string, string];
-    值符星宫: [string, string];
-    值使门宫: [string, string];
+  method: "拆补";
+  ganzhi: string;
+  xunHead: string;
+  xunKong: { dayKong: string; hourKong: string };
+  juDay: string;
+  ju: string;
+  jieqi: string;
+  zhifuZhishi: {
+    zhifuGan: [string, string];
+    zhifuStarGong: [string, string];
+    zhishiDoorGong: [string, string];
   };
-  天乙: string;
-  天盘: Partial<Record<Gong, string>>;
-  地盘: Record<Gong, string>;
-  门: Partial<Record<EightGong, string>>;
-  星: Partial<Record<EightGong, string>>;
-  神: Partial<Record<EightGong, string>>;
-  暗干: Record<Gong, string>;
-  马星: { 天马: string; 丁马: string; 驿马: string };
-  长生运: {
-    天盘: Record<string, unknown>;
-    地盘: Record<string, unknown>;
+  tianyi: string;
+  skyPan: Partial<Record<Gong, string>>;
+  earthPan: Record<Gong, string>;
+  doorPan: Partial<Record<EightGong, string>>;
+  starPan: Partial<Record<EightGong, string>>;
+  godPan: Partial<Record<EightGong, string>>;
+  anganPan: Record<Gong, string>;
+  maXing: { tianMa: string; dingMa: string; yiMa: string };
+  changshengYun: {
+    skyPan: Record<string, unknown>;
+    earthPan: Record<string, unknown>;
   };
-  门迫: Array<Record<string, string>>;
-  击刑: Array<Record<string, string>>;
+  menpo: Array<Record<string, string>>;
+  jixing: Array<Record<string, string>>;
 };
 ```
 
@@ -133,33 +133,33 @@ type HourChabuPan = {
 
 ```json
 {
-  "排盘方式": "拆补",
-  "干支": "甲辰年庚午月庚戌日癸未时",
-  "旬首": "甲戌",
-  "旬空": { "日空": "寅卯", "时空": "申酉" },
-  "局日": "乙庚日",
-  "排局": "阳六局上",
-  "节气": "芒种",
-  "值符值使": {
-    "值符天干": ["甲戌", "己"],
-    "值符星宫": ["柱", "坤"],
-    "值使门宫": ["惊", "兑"]
+  "method": "拆补",
+  "ganzhi": "甲辰年庚午月庚戌日癸未时",
+  "xunHead": "甲戌",
+  "xunKong": { "dayKong": "寅卯", "hourKong": "申酉" },
+  "juDay": "乙庚日",
+  "ju": "阳六局上",
+  "jieqi": "芒种",
+  "zhifuZhishi": {
+    "zhifuGan": ["甲戌", "己"],
+    "zhifuStarGong": ["柱", "坤"],
+    "zhishiDoorGong": ["惊", "兑"]
   },
-  "天乙": "己",
-  "天盘": { "坤": "己", "兑": "戊", "乾": "壬", "坎": "庚", "艮": "丁", "震": "丙", "巽": "辛", "离": "癸", "中": "乙" },
-  "地盘": { "乾": "戊", "兑": "己", "艮": "庚", "离": "辛", "坎": "壬", "坤": "癸", "震": "丁", "巽": "丙", "中": "乙" },
-  "门": { "兑": "惊", "乾": "开", "坎": "休", "艮": "生", "震": "伤", "巽": "杜", "离": "景", "坤": "死" },
-  "星": { "坤": "柱", "兑": "心", "乾": "蓬", "坎": "任", "艮": "冲", "震": "辅", "巽": "英", "离": "禽" },
-  "神": { "坤": "符", "兑": "蛇", "乾": "阴", "坎": "合", "艮": "勾", "震": "雀", "巽": "地", "离": "天" },
-  "暗干": { "兑": "癸", "艮": "丁", "离": "丙", "坎": "乙", "坤": "戊", "震": "己", "巽": "庚", "中": "辛", "乾": "壬" },
-  "马星": { "天马": "戌", "丁马": "未", "驿马": "巳" },
-  "长生运": { "天盘": {}, "地盘": {} },
-  "门迫": [],
-  "击刑": [
-    { "宫1": "甲申庚", "宫2": "艮", "类型": "申寅刑(无恩之刑)" },
-    { "宫1": "甲午辛", "宫2": "离", "类型": "午午刑(自刑)" },
-    { "宫1": "甲寅癸", "宫2": "坤", "类型": "寅申刑(无恩之刑)" },
-    { "宫1": "甲戌己", "宫2": "坤", "类型": "戌未刑(持势之刑)" }
+  "tianyi": "己",
+  "skyPan": { "坤": "己", "兑": "戊", "乾": "壬", "坎": "庚", "艮": "丁", "震": "丙", "巽": "辛", "离": "癸", "中": "乙" },
+  "earthPan": { "乾": "戊", "兑": "己", "艮": "庚", "离": "辛", "坎": "壬", "坤": "癸", "震": "丁", "巽": "丙", "中": "乙" },
+  "doorPan": { "兑": "惊", "乾": "开", "坎": "休", "艮": "生", "震": "伤", "巽": "杜", "离": "景", "坤": "死" },
+  "starPan": { "坤": "柱", "兑": "心", "乾": "蓬", "坎": "任", "艮": "冲", "震": "辅", "巽": "英", "离": "禽" },
+  "godPan": { "坤": "符", "兑": "蛇", "乾": "阴", "坎": "合", "艮": "勾", "震": "雀", "巽": "地", "离": "天" },
+  "anganPan": { "兑": "癸", "艮": "丁", "离": "丙", "坎": "乙", "坤": "戊", "震": "己", "巽": "庚", "中": "辛", "乾": "壬" },
+  "maXing": { "tianMa": "戌", "dingMa": "未", "yiMa": "巳" },
+  "changshengYun": { "skyPan": {}, "earthPan": {} },
+  "menpo": [],
+  "jixing": [
+    { "gong1": "甲申庚", "gong2": "艮", "type": "申寅刑(无恩之刑)" },
+    { "gong1": "甲午辛", "gong2": "离", "type": "午午刑(自刑)" },
+    { "gong1": "甲寅癸", "gong2": "坤", "type": "寅申刑(无恩之刑)" },
+    { "gong1": "甲戌己", "gong2": "坤", "type": "戌未刑(持势之刑)" }
   ]
 }
 ```

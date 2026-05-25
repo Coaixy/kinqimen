@@ -16,13 +16,13 @@
 /**
  * 六甲旬首对应的六仪和地支
  */
-const LIUJIA: Record<string, { 六仪: string; 地支: string }> = {
-  "甲子": { 六仪: "戊", 地支: "子" },
-  "甲戌": { 六仪: "己", 地支: "戌" },
-  "甲申": { 六仪: "庚", 地支: "申" },
-  "甲午": { 六仪: "辛", 地支: "午" },
-  "甲辰": { 六仪: "壬", 地支: "辰" },
-  "甲寅": { 六仪: "癸", 地支: "寅" },
+const LIUJIA: Record<string, { liuyi: string; zhi: string }> = {
+  "甲子": { liuyi: "戊", zhi: "子" },
+  "甲戌": { liuyi: "己", zhi: "戌" },
+  "甲申": { liuyi: "庚", zhi: "申" },
+  "甲午": { liuyi: "辛", zhi: "午" },
+  "甲辰": { liuyi: "壬", zhi: "辰" },
+  "甲寅": { liuyi: "癸", zhi: "寅" },
 };
 
 /**
@@ -47,31 +47,31 @@ const GONG_ZHI: Record<string, string[]> = {
  * 丑戌未刑（持势之刑）
  * 辰午酉亥自刑
  */
-const XING_RELATIONS: Record<string, { 刑: string[]; 类型: string }> = {
-  "子": { 刑: ["卯"], 类型: "无礼之刑" },
-  "卯": { 刑: ["子"], 类型: "无礼之刑" },
-  "寅": { 刑: ["巳", "申"], 类型: "无恩之刑" },
-  "巳": { 刑: ["寅", "申"], 类型: "无恩之刑" },
-  "申": { 刑: ["寅", "巳"], 类型: "无恩之刑" },
-  "丑": { 刑: ["戌", "未"], 类型: "持势之刑" },
-  "戌": { 刑: ["丑", "未"], 类型: "持势之刑" },
-  "未": { 刑: ["丑", "戌"], 类型: "持势之刑" },
-  "辰": { 刑: ["辰"], 类型: "自刑" },
-  "午": { 刑: ["午"], 类型: "自刑" },
-  "酉": { 刑: ["酉"], 类型: "自刑" },
-  "亥": { 刑: ["亥"], 类型: "自刑" },
+const XING_RELATIONS: Record<string, { xing: string[]; type: string }> = {
+  "子": { xing: ["卯"], type: "无礼之刑" },
+  "卯": { xing: ["子"], type: "无礼之刑" },
+  "寅": { xing: ["巳", "申"], type: "无恩之刑" },
+  "巳": { xing: ["寅", "申"], type: "无恩之刑" },
+  "申": { xing: ["寅", "巳"], type: "无恩之刑" },
+  "丑": { xing: ["戌", "未"], type: "持势之刑" },
+  "戌": { xing: ["丑", "未"], type: "持势之刑" },
+  "未": { xing: ["丑", "戌"], type: "持势之刑" },
+  "辰": { xing: ["辰"], type: "自刑" },
+  "午": { xing: ["午"], type: "自刑" },
+  "酉": { xing: ["酉"], type: "自刑" },
+  "亥": { xing: ["亥"], type: "自刑" },
 };
 
 /**
  * 击刑结果
  */
 export interface JixingResult {
-  旬首: string;      // 如 "甲子"
-  六仪: string;      // 如 "戊"
-  落宫: string;      // 如 "震"
-  旬首地支: string;  // 如 "子"
-  宫位地支: string;  // 如 "卯"
-  刑类型: string;    // 如 "无礼之刑"
+  xunHead: string;
+  liuyi: string;
+  gong: string;
+  xunHeadZhi: string;
+  gongZhi: string;
+  xingType: string;
 }
 
 /**
@@ -99,8 +99,8 @@ export function calcJixing(
 
     // 检查每个六甲旬首
     for (const [xunShou, info] of Object.entries(LIUJIA)) {
-      const { 六仪, 地支: xunZhi } = info;
-      const gong = ganToGong[六仪];
+      const { liuyi, zhi: xunZhi } = info;
+      const gong = ganToGong[liuyi];
 
       if (!gong) continue;
 
@@ -112,17 +112,17 @@ export function calcJixing(
       if (!xingInfo) continue;
 
       for (const gongZhi of gongZhiList) {
-        if (xingInfo.刑.includes(gongZhi)) {
+        if (xingInfo.xing.includes(gongZhi)) {
           const key = `${xunShou}-${gong}-${gongZhi}`;
           if (!seen.has(key)) {
             seen.add(key);
             results.push({
-              旬首: xunShou,
-              六仪: 六仪,
-              落宫: gong,
-              旬首地支: xunZhi,
-              宫位地支: gongZhi,
-              刑类型: xingInfo.类型,
+              xunHead: xunShou,
+              liuyi,
+              gong,
+              xunHeadZhi: xunZhi,
+              gongZhi,
+              xingType: xingInfo.type,
             });
           }
         }
@@ -148,14 +148,14 @@ export function calcAllJixing(
   earthPan: Record<string, string>,
   skyPan?: Record<string, string>
 ): Array<{
-  宫1: string;
-  宫2: string;
-  类型: string;
+  gong1: string;
+  gong2: string;
+  type: string;
 }> {
   const jixingResults = calcJixing(earthPan, skyPan);
   return jixingResults.map(r => ({
-    宫1: r.旬首 + r.六仪,
-    宫2: r.落宫,
-    类型: `${r.旬首地支}${r.宫位地支}刑(${r.刑类型})`,
+    gong1: r.xunHead + r.liuyi,
+    gong2: r.gong,
+    type: `${r.xunHeadZhi}${r.gongZhi}刑(${r.xingType})`,
   }));
 }

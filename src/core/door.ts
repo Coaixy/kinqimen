@@ -20,7 +20,7 @@ export function buildDoorPan(
   const yinyang = juString[0];
 
   // 值使门和所在宫
-  const [zhishiDoor, startGong] = zhifuZhishi.值使门宫;
+  const [zhishiDoor, startGong] = zhifuZhishi.zhishiDoorGong;
 
   // 处理中宫：借坤宫
   const actualStartGong = startGong === "中" ? "坤" : startGong;

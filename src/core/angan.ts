@@ -43,8 +43,8 @@ export function buildAnganPan(
   const hourGan = hourGanzhi[0]; // 时干
   const xunHead = shun(hourGanzhi); // 旬首
 
-  const zhishiGong = zhifuZhishi.值使门宫[1]; // 值使门落宫
-  const zhifuGong = zhifuZhishi.值符星宫[1]; // 值符星落宫
+  const zhishiGong = zhifuZhishi.zhishiDoorGong[1]; // 值使门落宫
+  const zhifuGong = zhifuZhishi.zhifuStarGong[1]; // 值符星落宫
 
   let startStem: string;
   let startPalace: string;

@@ -25,7 +25,7 @@ export function buildSkyPan(
   const yinyang = juString[0];
 
   // 值符星所在宫位
-  const fuHeadLocation = zhifuZhishi.值符星宫[1];
+  const fuHeadLocation = zhifuZhishi.zhifuStarGong[1];
 
   // 地盘反查：天干 -> 宫位
   const earthGanToGong = invertEarthPan(earthPan);

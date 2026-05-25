@@ -89,8 +89,8 @@ describe("数据表完整性测试", () => {
 
   test("旬空表有 6 条", () => {
     expect(Object.keys(GUXU).length).toBe(6);
-    expect(GUXU["甲子"].孤).toBe("戌亥");
-    expect(GUXU["甲子"].虚).toBe("辰巳");
+    expect(GUXU["甲子"].gu).toBe("戌亥");
+    expect(GUXU["甲子"].xu).toBe("辰巳");
   });
 
   test("值符排布表结构正确", () => {

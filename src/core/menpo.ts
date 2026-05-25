@@ -62,10 +62,10 @@ function isMenpo(door: string, gong: string): boolean {
  * 门迫结果
  */
 export interface MenpoResult {
-  门: string;
-  宫: string;
-  门五行: string;
-  宫五行: string;
+  door: string;
+  gong: string;
+  doorWuxing: string;
+  gongWuxing: string;
 }
 
 /**
@@ -81,10 +81,10 @@ export function calcMenpo(doorPan: Record<string, string>): MenpoResult[] {
   for (const [gong, door] of Object.entries(doorPan)) {
     if (isMenpo(door, gong)) {
       results.push({
-        门: door,
-        宫: gong,
-        门五行: DOOR_WUXING[door],
-        宫五行: GONG_WUXING[gong],
+        door,
+        gong,
+        doorWuxing: DOOR_WUXING[door],
+        gongWuxing: GONG_WUXING[gong],
       });
     }
   }
@@ -96,13 +96,13 @@ export function calcMenpo(doorPan: Record<string, string>): MenpoResult[] {
  * 获取单个门的门迫状态
  */
 export function getDoorMenpoStatus(door: string, gong: string): {
-  是否门迫: boolean;
-  门五行: string;
-  宫五行: string;
+  isMenpo: boolean;
+  doorWuxing: string;
+  gongWuxing: string;
 } {
   return {
-    是否门迫: isMenpo(door, gong),
-    门五行: DOOR_WUXING[door] || "",
-    宫五行: GONG_WUXING[gong] || "",
+    isMenpo: isMenpo(door, gong),
+    doorWuxing: DOOR_WUXING[door] || "",
+    gongWuxing: GONG_WUXING[gong] || "",
   };
 }

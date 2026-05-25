@@ -87,8 +87,8 @@ export function getChangshengState(ganzhi: string): string {
  * 长生运结果项
  */
 export interface ChangshengItem {
-  天干: string;
-  长生: Record<string, string>;  // 地支 -> 长生状态
+  gan: string;
+  changsheng: Record<string, string>;
 }
 
 /**
@@ -107,8 +107,8 @@ export function buildChangshengYun(
   earthPan: Record<string, string>,
   dayGanzhi: string
 ): {
-  天盘: Record<string, ChangshengItem>;
-  地盘: Record<string, ChangshengItem>;
+  skyPan: Record<string, ChangshengItem>;
+  earthPan: Record<string, ChangshengItem>;
 } {
   const tianpan: Record<string, ChangshengItem> = {};
   const dipan: Record<string, ChangshengItem> = {};
@@ -123,8 +123,8 @@ export function buildChangshengYun(
         changsheng[zhi] = changshengTable[zhi];
       }
       tianpan[gong] = {
-        天干: gan,
-        长生: changsheng,
+        gan,
+        changsheng,
       };
     }
   }
@@ -139,13 +139,13 @@ export function buildChangshengYun(
         changsheng[zhi] = changshengTable[zhi];
       }
       dipan[gong] = {
-        天干: gan,
-        长生: changsheng,
+        gan,
+        changsheng,
       };
     }
   }
 
-  return { 天盘: tianpan, 地盘: dipan };
+  return { skyPan: tianpan, earthPan: dipan };
 }
 
 /**
@@ -153,9 +153,9 @@ export function buildChangshengYun(
  * 从值符值使中提取天乙信息
  */
 export function calcTianyi(zhifuZhishi: {
-  值符天干: [string, string];
-  值符星宫: [string, string];
+  zhifuGan: [string, string];
+  zhifuStarGong: [string, string];
 }): string {
   // 天乙即值符天干
-  return zhifuZhishi.值符天干[1];
+  return zhifuZhishi.zhifuGan[1];
 }

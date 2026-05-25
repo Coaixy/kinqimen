@@ -30,69 +30,69 @@ export type God = "符" | "蛇" | "阴" | "合" | "勾" | "雀" | "地" | "天" 
 
 // 值符值使结果
 export interface ZhifuZhishi {
-  值符天干: [string, string];  // [旬首, 六仪]
-  值符星宫: [string, string];  // [星名, 宫名]
-  值使门宫: [string, string];  // [门名, 宫名]
+  zhifuGan: [string, string];
+  zhifuStarGong: [string, string];
+  zhishiDoorGong: [string, string];
 }
 
 // 马星结果
 export interface MaXing {
-  天马: string;
-  丁马: string;
-  驿马: string;
+  tianMa: string;
+  dingMa: string;
+  yiMa: string;
 }
 
 // 旬空结果
 export interface XunKong {
-  日空: string;
-  时空: string;
+  dayKong: string;
+  hourKong: string;
 }
 
 // 长生运项
 export interface ChangshengItem {
-  天干: string;
-  长生: Record<string, string>;  // 地支 -> 长生状态
+  gan: string;
+  changsheng: Record<string, string>;
 }
 
 // 门迫结果
 export interface MenpoItem {
-  门: string;
-  宫: string;
-  门五行: string;
-  宫五行: string;
+  door: string;
+  gong: string;
+  doorWuxing: string;
+  gongWuxing: string;
 }
 
 // 击刑结果
 export interface JixingItem {
-  宫1: string;
-  宫2: string;
-  类型: string;
+  gong1: string;
+  gong2: string;
+  type: string;
 }
 
 // 时家拆补盘返回结构
 export interface HourChabuPan {
-  排盘方式: "拆补";
-  干支: string;
-  旬首: string;
-  旬空: XunKong;
-  局日: string;
-  排局: string;
-  节气: string;
-  值符值使: ZhifuZhishi;
-  天乙: string;
-  天盘: Partial<Record<Gong, string>>;
-  地盘: Record<Gong, string>;
-  门: Partial<Record<EightGong, string>>;
-  星: Partial<Record<EightGong, string>>;
-  神: Partial<Record<EightGong, string>>;
-  暗干: Record<Gong, string>;
-  马星: MaXing;
-  长生运: {
-    天盘: Record<string, ChangshengItem>;
-    地盘: Record<string, ChangshengItem>;
+  method: "拆补";
+  ganzhi: string;
+  xunHead: string;
+  xunKong: XunKong;
+  juDay: string;
+  ju: string;
+  jieqi: string;
+  zhifuZhishi: ZhifuZhishi;
+  tianyi: string;
+  skyPan: Partial<Record<Gong, string>>;
+  earthPan: Record<Gong, string>;
+  doorPan: Partial<Record<EightGong, string>>;
+  starPan: Partial<Record<EightGong, string>>;
+  godPan: Partial<Record<EightGong, string>>;
+  anganPan: Record<Gong, string>;
+  maXing: MaXing;
+  changshengYun: {
+    skyPan: Record<string, ChangshengItem>;
+    earthPan: Record<string, ChangshengItem>;
   };
-  门迫: MenpoItem[];
-  击刑: JixingItem[];
+  menpo: MenpoItem[];
+  jixing: JixingItem[];
 }
 
 // 错误类型

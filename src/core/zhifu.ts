@@ -16,9 +16,9 @@ import { rotateFrom, rotateFromReverse, shun } from "./helpers";
  * 值符值使结果
  */
 export interface ZhifuZhishiResult {
-  值符天干: [string, string];  // [旬首, 六仪]
-  值符星宫: [string, string];  // [星名, 宫名]
-  值使门宫: [string, string];  // [门名, 宫名]
+  zhifuGan: [string, string];
+  zhifuStarGong: [string, string];
+  zhishiDoorGong: [string, string];
 }
 
 /**
@@ -181,9 +181,9 @@ export function calcZhifuZhishi(
   let zhishiGong = CNUMBER_TO_GUA[zhishiGongChar];
 
   return {
-    值符天干: [xunHead, liuYi],
-    值符星宫: [zhifuStar, zhifuGong],
-    值使门宫: [zhishiDoor, zhishiGong],
+    zhifuGan: [xunHead, liuYi],
+    zhifuStarGong: [zhifuStar, zhifuGong],
+    zhishiDoorGong: [zhishiDoor, zhishiGong],
   };
 }
 

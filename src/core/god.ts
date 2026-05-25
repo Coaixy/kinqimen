@@ -20,7 +20,7 @@ export function buildGodPan(
   const yinyang = juString[0];
 
   // 值符星所在宫是八神起点
-  const [_, startGong] = zhifuZhishi.值符星宫;
+  const [_, startGong] = zhifuZhishi.zhifuStarGong;
 
   // 处理中宫：借坤宫
   let actualStartGong = startGong === "中" ? "坤" : startGong;

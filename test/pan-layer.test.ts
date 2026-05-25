@@ -72,25 +72,25 @@ describe("值符值使测试", () => {
 
   test("计算值符值使 - 阳一局甲子时", () => {
     const result = calcZhifuZhishi("阳一局上", "甲子");
-    expect(result.值符天干[0]).toBe("甲子");
-    expect(result.值符天干[1]).toBe("戊");
-    expect(result.值符星宫[0]).toBe("蓬");
-    expect(result.值使门宫[0]).toBe("休");
+    expect(result.zhifuGan[0]).toBe("甲子");
+    expect(result.zhifuGan[1]).toBe("戊");
+    expect(result.zhifuStarGong[0]).toBe("蓬");
+    expect(result.zhishiDoorGong[0]).toBe("休");
   });
 
   test("计算值符值使 - 阴九局甲子时", () => {
     const result = calcZhifuZhishi("阴九局上", "甲子");
-    expect(result.值符天干[0]).toBe("甲子");
-    expect(result.值符天干[1]).toBe("戊");
+    expect(result.zhifuGan[0]).toBe("甲子");
+    expect(result.zhifuGan[1]).toBe("戊");
     // 阴九局甲子时，根据表格驱动算法，值符星是"英"
-    expect(result.值符星宫[0]).toBe("英");
+    expect(result.zhifuStarGong[0]).toBe("英");
   });
 
   test("不同时干支有不同的值符值使", () => {
     const result1 = calcZhifuZhishi("阳一局上", "甲子");
     const result2 = calcZhifuZhishi("阳一局上", "甲戌");
-    expect(result1.值符天干[0]).not.toBe(result2.值符天干[0]);
-    expect(result1.值符星宫[0]).not.toBe(result2.值符星宫[0]);
+    expect(result1.zhifuGan[0]).not.toBe(result2.zhifuGan[0]);
+    expect(result1.zhifuStarGong[0]).not.toBe(result2.zhifuStarGong[0]);
   });
 });
 

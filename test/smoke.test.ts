@@ -60,20 +60,20 @@ describe("Qimen 脚手架测试", () => {
     const pan = qimen.pan();
 
     // 验证基本字段
-    expect(pan.排盘方式).toBe("拆补");
-    expect(pan.干支).toBeDefined();
-    expect(pan.旬首).toBeDefined();
-    expect(pan.旬空).toBeDefined();
-    expect(pan.局日).toBeDefined();
-    expect(pan.排局).toBeDefined();
-    expect(pan.节气).toBeDefined();
-    expect(pan.值符值使).toBeDefined();
-    expect(pan.天乙).toBeDefined();
-    expect(pan.天盘).toBeDefined();
-    expect(pan.地盘).toBeDefined();
-    expect(pan.门).toBeDefined();
-    expect(pan.星).toBeDefined();
-    expect(pan.神).toBeDefined();
-    expect(pan.马星).toBeDefined();
+    expect(pan.method).toBe("拆补");
+    expect(pan.ganzhi).toBeDefined();
+    expect(pan.xunHead).toBeDefined();
+    expect(pan.xunKong).toBeDefined();
+    expect(pan.juDay).toBeDefined();
+    expect(pan.ju).toBeDefined();
+    expect(pan.jieqi).toBeDefined();
+    expect(pan.zhifuZhishi).toBeDefined();
+    expect(pan.tianyi).toBeDefined();
+    expect(pan.skyPan).toBeDefined();
+    expect(pan.earthPan).toBeDefined();
+    expect(pan.doorPan).toBeDefined();
+    expect(pan.starPan).toBeDefined();
+    expect(pan.godPan).toBeDefined();
+    expect(pan.maXing).toBeDefined();
   });
 });

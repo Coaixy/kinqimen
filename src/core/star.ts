@@ -26,7 +26,7 @@ export function buildStarPan(
   const yinyang = juString[0];
 
   // 值符星和所在宫
-  let [zhifuStar, startGong] = zhifuZhishi.值符星宫;
+  let [zhifuStar, startGong] = zhifuZhishi.zhifuStarGong;
 
   // 禽星和芮星是同一星的不同称呼
   if (zhifuStar === "芮") {

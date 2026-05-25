@@ -59,10 +59,10 @@ export function calcYiMa(hourGanzhi: string): string {
 export function calcAllMa(
   dayGanzhi: string,
   hourGanzhi: string
-): { 天马: string; 丁马: string; 驿马: string } {
+): { tianMa: string; dingMa: string; yiMa: string } {
   return {
-    天马: calcTianMa(dayGanzhi),
-    丁马: calcDingMa(dayGanzhi),
-    驿马: calcYiMa(hourGanzhi),
+    tianMa: calcTianMa(dayGanzhi),
+    dingMa: calcDingMa(dayGanzhi),
+    yiMa: calcYiMa(hourGanzhi),
   };
 }

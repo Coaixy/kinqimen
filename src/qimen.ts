@@ -78,7 +78,7 @@ function validateInput(input: QimenDateInput): void {
  * });
  *
  * const pan = qimen.pan();
- * console.log(pan.排局); // 如 "阳三局上"
+ * console.log(pan.ju); // 如 "阳三局上"
  * ```
  */
 export class Qimen {
@@ -106,7 +106,7 @@ export class Qimen {
     const juString = qimenJuChaibu(gz, jieqiName);
     const juDay = qimenJuDay(gz.day);
     const xunHead = shun(gz.hour);
-    const { 日空: daykong, 时空: shikong } = calcDayKongShiKong(gz.day, gz.hour);
+    const { dayKong, hourKong } = calcDayKongShiKong(gz.day, gz.hour);
 
     // Phase 5: 地盘、值符值使、门星神
     const earthPan = buildEarthPan(juString);
@@ -132,25 +132,25 @@ export class Qimen {
     const jixing = calcAllJixing(earthPan, skyPan);
 
     return {
-      排盘方式: "拆补",
-      干支: formatGanzhi(gz),
-      旬首: xunHead,
-      旬空: { 日空: daykong, 时空: shikong },
-      局日: juDay,
-      排局: juString,
-      节气: jieqiName,
-      值符值使: zhifuZhishi,
-      天乙: tianyi,
-      天盘: skyPan,
-      地盘: earthPan,
-      门: doorPan,
-      星: starPan,
-      神: godPan,
-      暗干: anganPan,
-      马星: maStar,
-      长生运: changShengYun,
-      门迫: menpo,
-      击刑: jixing,
+      method: "拆补",
+      ganzhi: formatGanzhi(gz),
+      xunHead,
+      xunKong: { dayKong, hourKong },
+      juDay,
+      ju: juString,
+      jieqi: jieqiName,
+      zhifuZhishi,
+      tianyi,
+      skyPan,
+      earthPan,
+      doorPan,
+      starPan,
+      godPan,
+      anganPan,
+      maXing: maStar,
+      changshengYun: changShengYun,
+      menpo,
+      jixing,
     };
   }
 }

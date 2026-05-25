@@ -15,7 +15,7 @@ import { shun } from "./helpers";
 export function calcDayKongShiKong(
   dayGanzhi: string,
   hourGanzhi: string
-): { 日空: string; 时空: string } {
+): { dayKong: string; hourKong: string } {
   const dayXunHead = shun(dayGanzhi);
   const hourXunHead = shun(hourGanzhi);
 
@@ -30,7 +30,7 @@ export function calcDayKongShiKong(
   }
 
   return {
-    日空: dayGuxu.孤,
-    时空: hourGuxu.孤,
+    dayKong: dayGuxu.gu,
+    hourKong: hourGuxu.gu,
   };
 }

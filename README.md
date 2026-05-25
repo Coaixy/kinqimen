@@ -1,11 +1,9 @@
 <div align="center">
 
-# 🔮 堅奇门 · KinQiMen
+# 堅奇门 · KinQiMen
 
-### 奇门遁甲排盘系统
+### TypeScript 奇门遁甲排盘库
 
-[![Python](https://img.shields.io/pypi/pyversions/kinqimen?label=Python&logo=python)](https://pypi.org/project/kinqimen/)
-[![PyPI](https://img.shields.io/pypi/v/kinqimen?label=PyPI&logo=pypi)](https://pypi.org/project/kinqimen/)
 [![npm](https://img.shields.io/npm/v/kinqimen?label=npm&logo=npm)](https://www.npmjs.com/package/kinqimen)
 [![License](https://img.shields.io/github/license/kentang2017/kinqimen?label=License)](LICENSE)
 
@@ -13,27 +11,17 @@
 
 ---
 
-## 功能对比
+## 功能
 
-| 功能 | Python | TypeScript |
-|---|:---:|:---:|
-| 时家奇门（拆补法） | ✅ | ✅ |
-| 时家奇门（置闰法） | ✅ | ❌ |
-| 刻家奇门 | ✅ | ❌ |
-| 金函玉镜 | ✅ | ❌ |
-| 暗干 | ❌ | ✅ |
-| 长生运 | ✅ | ✅ |
-| 门迫 / 击刑 | ❌ | ✅ |
+- 时家奇门拆补法排盘。
+- 干支、旬首旬空、值符值使、九宫天盘/地盘、八门、九星、八神。
+- 暗干、马星、长生运、门迫、击刑。
 
 ---
 
 ## 安装
 
 ```bash
-# Python
-pip install sxtwl kinqimen
-
-# TypeScript / JavaScript
 npm install kinqimen
 ```
 
@@ -41,27 +29,21 @@ npm install kinqimen
 
 ## 使用
 
-### Python
-
-```python
-from kinqimen import kinqimen
-
-result = kinqimen.Qimen(2024, 6, 15, 14, 30).pan(1)  # 1=拆补, 2=置闰
-```
-
-### TypeScript
-
 ```typescript
 import { Qimen } from "kinqimen";
 
 const pan = new Qimen({
-  year: 2024, month: 6, day: 15, hour: 14, minute: 30
+  year: 2024,
+  month: 6,
+  day: 15,
+  hour: 14,
+  minute: 30,
 }).pan();
 ```
 
 ---
 
-## TypeScript 输出
+## 输出示例
 
 ```json
 {

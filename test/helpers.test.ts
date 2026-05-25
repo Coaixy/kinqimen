@@ -198,7 +198,7 @@ describe("六十甲子完整性", () => {
     expect(xunHeads).toEqual(["甲子", "甲戌", "甲申", "甲午", "甲辰", "甲寅"]);
   });
 
-  test("六十甲子与 Python 一致", () => {
+  test("六十甲子顺序稳定", () => {
     // 验证几个关键位置
     expect(JIAZI[0]).toBe("甲子");
     expect(JIAZI[1]).toBe("乙丑");

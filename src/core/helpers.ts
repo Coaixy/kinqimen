@@ -6,7 +6,6 @@ import { JIAZI, TIAN_GAN, DI_ZHI, JJ } from "../data/tables";
 
 /**
  * 从指定元素起循环排列数组
- * 对应 Python new_list()
  *
  * @example
  * rotateFrom(['a','b','c','d'], 'c') // ['c','d','a','b']
@@ -21,7 +20,6 @@ export function rotateFrom<T>(arr: readonly T[], from: T): T[] {
 
 /**
  * 从指定元素起逆序循环排列数组
- * 对应 Python new_list_r()
  *
  * @example
  * rotateFromReverse(['a','b','c','d'], 'c') // ['c','b','a','d']
@@ -42,7 +40,6 @@ export function rotateFromReverse<T>(arr: readonly T[], from: T): T[] {
 
 /**
  * 多 key 字典查找
- * 对应 Python multi_key_dict_get()
  *
  * @example
  * multiKeyGet([[['a','b'], 1], [['c'], 2]], 'b') // 1
@@ -63,7 +60,6 @@ export function multiKeyGet<V>(
 
 /**
  * 将数组按指定大小分割
- * 对应 Python split_list()
  */
 export function splitList<T>(arr: readonly T[], chunkSize: number): T[][] {
   const result: T[][] = [];
@@ -100,7 +96,6 @@ let _liujiashunCache: Map<string, string> | null = null;
 
 /**
  * 获取干支的旬首
- * 对应 Python shun()
  *
  * @example
  * shun('甲子') // '甲子'

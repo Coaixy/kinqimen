@@ -49,7 +49,7 @@ export const JJ: Record<string, string> = {
   "甲寅": "癸",
 };
 
-// 24节气名（从春分开始，符合 Python config.py jieqi_name）
+// 24节气名（从春分开始）
 export const JIEQI_NAME = [
   "春分", "清明", "谷雨", "立夏", "小满", "芒种",
   "夏至", "小暑", "大暑", "立秋", "处暑", "白露",
@@ -57,7 +57,7 @@ export const JIEQI_NAME = [
   "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰",
 ] as const;
 
-// 24节气名（从小寒开始，符合 Python jieqi.py jqmc）
+// 24节气名（从小寒开始）
 export const JQMC = [
   "小寒", "大寒", "立春", "雨水", "惊蛰", "春分",
   "清明", "谷雨", "立夏", "小满", "芒种", "夏至",

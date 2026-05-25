@@ -111,11 +111,18 @@ describe("数据表完整性测试", () => {
 
   test("所有常量使用简体中文", () => {
     // 检查门名
+    expect(DOOR_R).toContain("伤");
+    expect(DOOR_R).toContain("惊");
+    expect(DOOR_R).toContain("开");
     expect(DOOR_R).not.toContain("傷");
     expect(DOOR_R).not.toContain("驚");
     expect(DOOR_R).not.toContain("開");
 
     // 检查卦名
+    expect(EIGHT_GUA).toContain("兑");
+    expect(EIGHT_GUA).toContain("离");
+    expect(CLOCKWISE_EIGHT).toContain("兑");
+    expect(CLOCKWISE_EIGHT).toContain("离");
     expect(EIGHT_GUA).not.toContain("兌");
     expect(EIGHT_GUA).not.toContain("離");
     expect(CLOCKWISE_EIGHT).not.toContain("兌");

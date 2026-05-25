@@ -5,7 +5,6 @@
 
 // 繁体 -> 简体 映射表
 const TRAD_TO_SIMP: Record<string, string> = {
-  // 基础术语
   "陽": "阳",
   "陰": "阴",
   "兌": "兑",
@@ -20,21 +19,15 @@ const TRAD_TO_SIMP: Record<string, string> = {
   "閏": "闰",
   "驛": "驿",
   "氣": "气",
-  // 门名
   "傷": "伤",
   "驚": "惊",
   "開": "开",
-  // 星名
   "沖": "冲",
   "輔": "辅",
-  // 节气
   "穀": "谷",
   "處": "处",
-  // 长生
   "臨": "临",
   "絕": "绝",
-  // 其他
-  "値": "值",
   "運": "运",
   "宮": "宫",
   "蟄": "蛰",
@@ -51,8 +44,8 @@ export function normalizeChar(c: string): string {
  * 转换字符串中的所有繁体字符
  *
  * @example
- * normalizeStr('陽遁') // '阳遁'
- * normalizeStr('兌宮') // '兑宫'
+ * normalizeStr("陽遁") // "阳遁"
+ * normalizeStr("兌宮") // "兑宫"
  */
 export function normalizeStr(s: string): string {
   let result = "";

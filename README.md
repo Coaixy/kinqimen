@@ -156,10 +156,10 @@ type HourChabuPan = {
   "changshengYun": { "skyPan": {}, "earthPan": {} },
   "menpo": [],
   "jixing": [
-    { "gong1": "甲申庚", "gong2": "艮", "type": "申寅刑(无恩之刑)" },
-    { "gong1": "甲午辛", "gong2": "离", "type": "午午刑(自刑)" },
-    { "gong1": "甲寅癸", "gong2": "坤", "type": "寅申刑(无恩之刑)" },
-    { "gong1": "甲戌己", "gong2": "坤", "type": "戌未刑(持势之刑)" }
+    { "gong": "艮", "gan": "甲申庚" },
+    { "gong": "离", "gan": "甲午辛" },
+    { "gong": "坤", "gan": "甲寅癸" },
+    { "gong": "坤", "gan": "甲戌己" }
   ]
 }
 ```

@@ -142,20 +142,18 @@ export function calcJixing(
 }
 
 /**
- * 计算全盘击刑（简化版，用于兼容旧接口）
+ * 计算全盘击刑输出
  */
 export function calcAllJixing(
   earthPan: Record<string, string>,
   skyPan?: Record<string, string>
 ): Array<{
-  gong1: string;
-  gong2: string;
-  type: string;
+  gong: string;
+  gan: string;
 }> {
   const jixingResults = calcJixing(earthPan, skyPan);
   return jixingResults.map(r => ({
-    gong1: r.xunHead + r.liuyi,
-    gong2: r.gong,
-    type: `${r.xunHeadZhi}${r.gongZhi}刑(${r.xingType})`,
+    gong: r.gong,
+    gan: r.xunHead + r.liuyi,
   }));
 }

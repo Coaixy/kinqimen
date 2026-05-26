@@ -64,9 +64,8 @@ export interface MenpoItem {
 
 // 击刑结果
 export interface JixingItem {
-  gong1: string;
-  gong2: string;
-  type: string;
+  gong: string;
+  gan: string;
 }
 
 // 时家拆补盘返回结构

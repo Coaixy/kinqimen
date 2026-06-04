@@ -123,8 +123,8 @@ describe("Qimen 脚手架测试", () => {
         兑: "蛇",
         乾: "阴",
         坎: "合",
-        艮: "勾",
-        震: "雀",
+        艮: "虎",
+        震: "玄",
         巽: "地",
         离: "天",
       },
@@ -286,5 +286,19 @@ describe("Qimen 脚手架测试", () => {
         },
       ],
     });
+  });
+
+  test("2026-06-04 17:00 离宫盘面", () => {
+    const pan = new Qimen({
+      year: 2026,
+      month: 6,
+      day: 4,
+      hour: 17,
+      minute: 0,
+    }).pan();
+
+    expect(pan.skyPan["离"]).toBe("辛");
+    expect(pan.earthPan["离"]).toBe("壬");
+    expect(pan.godPan["离"]).toBe("虎");
   });
 });

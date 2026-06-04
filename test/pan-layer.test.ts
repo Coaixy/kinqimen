@@ -154,12 +154,12 @@ describe("八神盘测试", () => {
 
     expect(Object.keys(godPan).length).toBe(8);
 
-    // 阳遁使用勾雀
+    // 阳遁使用白虎、玄武
     const gods = Object.values(godPan);
-    expect(gods).toContain("勾");
-    expect(gods).toContain("雀");
-    expect(gods).not.toContain("虎");
-    expect(gods).not.toContain("玄");
+    expect(gods).toContain("虎");
+    expect(gods).toContain("玄");
+    expect(gods).not.toContain("勾");
+    expect(gods).not.toContain("雀");
   });
 
   test("阴遁八神", () => {

@@ -34,7 +34,7 @@ export const DOOR_R = ["休", "生", "伤", "杜", "景", "死", "惊", "开"] a
 export const STAR_R = ["蓬", "任", "冲", "辅", "英", "禽", "柱", "心"] as const;
 
 // 阳遁八神
-export const GOD_YANG = ["符", "蛇", "阴", "合", "勾", "雀", "地", "天"] as const;
+export const GOD_YANG = ["符", "蛇", "阴", "合", "虎", "玄", "地", "天"] as const;
 
 // 阴遁八神
 export const GOD_YIN = ["符", "蛇", "阴", "合", "虎", "玄", "地", "天"] as const;

@@ -108,7 +108,8 @@ function buildSkyPanNormal(
   // 如果符头不在地盘八宫中，使用值符星宫位置的天干
   let startGan = fuHead;
   if (!earthGans.includes(fuHead)) {
-    const earthGanAtLocation = earthPan[fuHeadLocation];
+    // 符头落中宫时按“中宫寄坤”处理，避免把值符星落宫的地盘干误当作起干。
+    const earthGanAtLocation = earthPan["坤"];
     if (earthGanAtLocation && earthGans.includes(earthGanAtLocation)) {
       startGan = earthGanAtLocation;
     } else {

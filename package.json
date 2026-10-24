@@ -1,7 +1,7 @@
 {
   "name": "kinqimen",
-  "version": "0.3.1",
-  "description": "Hour-based Qimen Dunjia Chabu chart calculation library in TypeScript.",
+  "version": "0.4.0",
+  "description": "Hour-based Qimen Dunjia Chabu and Mingfa chart calculation library in TypeScript.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,8 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node --format esm && tsc --emitDeclarationOnly",
@@ -27,7 +28,8 @@
     "qimen-dunjia",
     "chinese-astrology",
     "divination",
-    "chabu"
+    "chabu",
+    "mingfa"
   ],
   "author": "",
   "license": "GPL-3.0-only",

@@ -1,15 +1,15 @@
 /**
- * Qimen 主类 - 时家奇门拆补法
+ * Hour-based Qimen charts using Chabu or Mingfa plate rules.
  */
 
-import type { QimenDateInput, HourChabuPan } from "./types";
+import type { QimenDateInput, QimenMethod, HourChabuPan, HourMingfaPan, HourQimenPan } from "./types";
 import { QimenInputError } from "./types";
-import type { CalendarAdapter, GanzhiResult } from "./calendar/adapter";
+import type { CalendarAdapter } from "./calendar/adapter";
 import { Tyme4tsCalendarAdapter } from "./calendar/tyme-adapter";
 import { formatGanzhi } from "./calendar/ganzhi";
 import { getCurrentJieqiName } from "./calendar/jieqi";
-import { qimenJuChaibu, qimenJuDay, hourGanzhiZhifu } from "./core/ju-chabu";
-import { buildEarthPan, invertEarthPan } from "./core/earth";
+import { qimenJuChaibu, qimenJuDay } from "./core/ju-chabu";
+import { buildEarthPan } from "./core/earth";
 import { calcZhifuZhishi, getZhifuGan } from "./core/zhifu";
 import { buildDoorPan } from "./core/door";
 import { buildStarPan } from "./core/star";
@@ -22,6 +22,7 @@ import { shun } from "./core/helpers";
 import { calcMenpo } from "./core/menpo";
 import { calcAllJixing } from "./core/jixing";
 import { buildAnganPan } from "./core/angan";
+import { buildMingfaPan } from "./core/mingfa";
 
 /**
  * 验证输入参数
@@ -91,11 +92,15 @@ export class Qimen {
     this.calendar = calendar ?? new Tyme4tsCalendarAdapter();
   }
 
-  /**
-   * 计算时家奇门拆补盘
-   * @returns 时家拆补盘结果
-   */
-  pan(): HourChabuPan {
+  /** Build a Chabu rotating chart by default, or a Mingfa flying chart. */
+  pan(method?: "拆补"): HourChabuPan;
+  pan(method: "鸣法"): HourMingfaPan;
+  pan(method: QimenMethod): HourQimenPan;
+  pan(method: QimenMethod = "拆补"): HourQimenPan {
+    if (method !== "拆补" && method !== "鸣法") {
+      throw new QimenInputError(`不支持的排盘方式: ${method}`);
+    }
+
     const { year, month, day, hour, minute } = this.input;
 
     // Phase 3: 获取干支和节气
@@ -107,6 +112,25 @@ export class Qimen {
     const juDay = qimenJuDay(gz.day);
     const xunHead = shun(gz.hour);
     const { dayKong, hourKong } = calcDayKongShiKong(gz.day, gz.hour);
+
+    if (method === "鸣法") {
+      const layers = buildMingfaPan(juString, gz.hour);
+      return {
+        method,
+        ganzhi: formatGanzhi(gz),
+        xunHead,
+        xunKong: { dayKong, hourKong },
+        juDay,
+        ju: juString,
+        jieqi: jieqiName,
+        ...layers,
+        tianyi: calcTianyi(layers.zhifuZhishi),
+        maXing: calcAllMa(gz.day, gz.hour),
+        changshengYun: buildChangshengYun(layers.skyPan, layers.earthPan, gz.day),
+        menpo: calcMenpo(layers.doorPan),
+        jixing: calcAllJixing(layers.earthPan, layers.skyPan),
+      };
+    }
 
     // Phase 5: 地盘、值符值使、门星神
     const earthPan = buildEarthPan(juString);

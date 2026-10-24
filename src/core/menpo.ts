@@ -17,6 +17,7 @@ const DOOR_WUXING: Record<string, string> = {
   "死": "土",
   "惊": "金",
   "开": "金",
+  "中": "土",
 };
 
 /**

@@ -1,12 +1,18 @@
 /**
- * kinqimen - 时家奇门拆补法 TypeScript 库
+ * kinqimen - hour-based Chabu and Mingfa Qimen charts.
  */
 
 export { Qimen } from "./qimen";
 
 export type {
   QimenDateInput,
+  QimenMethod,
   HourChabuPan,
+  HourMingfaPan,
+  HourQimenPan,
+  MingfaDoor,
+  MingfaStar,
+  MingfaGod,
   ZhifuZhishi,
   MaXing,
   XunKong,

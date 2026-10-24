@@ -2,7 +2,7 @@
 
 # 堅奇门 · KinQiMen
 
-TypeScript 时家奇门拆补法排盘库。
+TypeScript library for hour-based Chabu and Mingfa Qimen Dunjia charts.
 
 [![npm](https://img.shields.io/npm/v/kinqimen?label=npm&logo=npm)](https://www.npmjs.com/package/kinqimen)
 [![License](https://img.shields.io/github/license/kentang2017/kinqimen?label=License)](LICENSE)
@@ -11,7 +11,7 @@ TypeScript 时家奇门拆补法排盘库。
 
 ## 功能
 
-- 时家奇门拆补法排盘。
+- Chabu rotating charts and Mingfa flying charts.
 - 支持干支、旬首旬空、局日、排局、节气、值符值使。
 - 输出天盘、地盘、八门、九星、八神、暗干。
 - 输出天乙、马星、长生运、门迫、击刑等辅助信息。
@@ -51,6 +51,47 @@ console.log(pan.zhifuZhishi);
 console.log(pan.anganPan);
 ```
 
+## Mingfa charts
+
+Pass `"鸣法"` to `pan()` to calculate a Mingfa chart:
+
+```typescript
+import { Qimen } from "kinqimen";
+import type { HourMingfaPan } from "kinqimen";
+
+const pan: HourMingfaPan = new Qimen({
+  year: 2024,
+  month: 12,
+  day: 13,
+  hour: 9,
+  minute: 31,
+}).pan("鸣法");
+
+console.log(pan.method);           // "鸣法"
+console.log(pan.ju);               // "阴四局上"
+console.log(pan.starPan["中"]);    // "任"
+console.log(pan.anganPan["坤"]);   // "癸"
+console.log(pan.anzhiPan["坤"]);   // "巳"
+```
+
+The rules follow [deminzhang/qimen-go](https://github.com/deminzhang/qimen-go/tree/4d3f58fa0f401b5b3a337f119138e99e90685dda/xuan)
+at commit `4d3f58fa0f401b5b3a337f119138e99e90685dda`:
+
+- Ju selection uses Chabu. Stars and doors always fly forward through palace numbers 1–9.
+- All nine palaces participate. Tianrui (`芮`) and Tianqin (`禽`) remain separate, and the door plate includes the middle door (`中`). There is no center-palace hosting.
+- Earth stems, heaven stems, gods, and hidden stems/branches fly forward in Yang Dun and backward in Yin Dun.
+- Yang gods use `符蛇阴合勾常雀地天`; Yin gods use `符蛇阴合虎常玄地天`. `常` denotes Taichang (`太常`).
+- `anganPan` contains the upstream `PathGan`; `anzhiPan` contains `PathZhi`. The ten hours of the xun fly across nine palaces, so the final `癸` replaces `甲` at the starting palace.
+
+`HourMingfaPan` includes the existing common metadata and auxiliary fields, with complete
+`Record<Gong, ...>` plates for all seven layers. Middle-door pressure uses the Earth element.
+Calendar calculations use this package's `tyme4ts` adapter and its existing 23:00 day rollover.
+Go layout comparisons use identical Ju and hour pillars; the calendar backend is not replaced.
+
+Calling `pan()` or `pan("拆补")` returns `HourChabuPan`.
+For a variable method, use the exported `QimenMethod` and `HourQimenPan` union and narrow on `pan.method`.
+Unsupported methods throw `QimenInputError`.
+
 ## API
 
 ### `new Qimen(input)`
@@ -77,9 +118,9 @@ type QimenDateInput = {
 
 输入不合法时会抛出 `QimenInputError`。
 
-### `qimen.pan()`
+### `qimen.pan(method?)`
 
-计算并返回时家奇门拆补盘。
+Returns a Chabu rotating chart by default. `pan("鸣法")` returns a Mingfa flying chart as documented above.
 
 ```typescript
 import { Qimen } from "kinqimen";
@@ -178,7 +219,13 @@ import {
 
 import type {
   QimenDateInput,
+  QimenMethod,
   HourChabuPan,
+  HourMingfaPan,
+  HourQimenPan,
+  MingfaDoor,
+  MingfaStar,
+  MingfaGod,
   ZhifuZhishi,
   MaXing,
   XunKong,
@@ -212,3 +259,5 @@ bun run prepublishOnly
 ## License
 
 [GPL-3.0-only](LICENSE)
+
+The adapted Mingfa code includes the upstream MIT notice in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

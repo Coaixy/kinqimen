@@ -28,6 +28,11 @@ export type Star = "蓬" | "任" | "冲" | "辅" | "英" | "禽" | "柱" | "心"
 // 八神
 export type God = "符" | "蛇" | "阴" | "合" | "勾" | "雀" | "地" | "天" | "虎" | "玄";
 
+export type QimenMethod = "拆补" | "鸣法";
+export type MingfaDoor = Door | "中";
+export type MingfaStar = Star | "芮";
+export type MingfaGod = God | "常";
+
 // 值符值使结果
 export interface ZhifuZhishi {
   zhifuGan: [string, string];
@@ -93,6 +98,19 @@ export interface HourChabuPan {
   menpo: MenpoItem[];
   jixing: JixingItem[];
 }
+
+export interface HourMingfaPan extends Omit<HourChabuPan, "method"> {
+  method: "鸣法";
+  skyPan: Record<Gong, Tiangan>;
+  earthPan: Record<Gong, Tiangan>;
+  doorPan: Record<Gong, MingfaDoor>;
+  starPan: Record<Gong, MingfaStar>;
+  godPan: Record<Gong, MingfaGod>;
+  anganPan: Record<Gong, Tiangan>;
+  anzhiPan: Record<Gong, Dizhi>;
+}
+
+export type HourQimenPan = HourChabuPan | HourMingfaPan;
 
 // 错误类型
 export class QimenInputError extends Error {

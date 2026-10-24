@@ -1,10 +1,14 @@
-# Third-party notices
+# 第三方授权说明
 
 ## deminzhang/qimen-go
 
-The Mingfa calculation in `src/core/mingfa.ts` is adapted from
-[`xuan/qimen.go` and `xuan/qimen_defs.go`](https://github.com/deminzhang/qimen-go/tree/4d3f58fa0f401b5b3a337f119138e99e90685dda/xuan)
-at commit `4d3f58fa0f401b5b3a337f119138e99e90685dda`.
+`src/core/mingfa.ts` 中的鸣法算法移植自该项目的
+[`xuan/qimen.go` 和 `xuan/qimen_defs.go`](https://github.com/deminzhang/qimen-go/tree/4d3f58fa0f401b5b3a337f119138e99e90685dda/xuan)，
+对应提交为 `4d3f58fa0f401b5b3a337f119138e99e90685dda`。
+
+以下保留上游 MIT 许可证及版权声明原文，以满足授权要求。
+
+### MIT 许可证原文
 
 MIT License
 

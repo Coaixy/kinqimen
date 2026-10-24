@@ -2,18 +2,18 @@
 
 # 堅奇门 · KinQiMen
 
-TypeScript library for hour-based Chabu and Mingfa Qimen Dunjia charts.
+TypeScript 时家奇门排盘库，支持拆补转盘与鸣法飞盘。
 
 [![npm](https://img.shields.io/npm/v/kinqimen?label=npm&logo=npm)](https://www.npmjs.com/package/kinqimen)
-[![License](https://img.shields.io/github/license/kentang2017/kinqimen?label=License)](LICENSE)
+[![许可证](https://img.shields.io/github/license/kentang2017/kinqimen?label=%E8%AE%B8%E5%8F%AF%E8%AF%81)](LICENSE)
 
 </div>
 
 ## 功能
 
-- Chabu rotating charts and Mingfa flying charts.
+- 支持时家奇门拆补转盘与鸣法飞盘。
 - 支持干支、旬首旬空、局日、排局、节气、值符值使。
-- 输出天盘、地盘、八门、九星、八神、暗干。
+- 输出天盘、地盘、门盘、星盘、神盘和暗干，鸣法额外输出暗支。
 - 输出天乙、马星、长生运、门迫、击刑等辅助信息。
 - 基于 `tyme4ts` 做历法换算，23:00 子时按次日处理。
 
@@ -51,9 +51,9 @@ console.log(pan.zhifuZhishi);
 console.log(pan.anganPan);
 ```
 
-## Mingfa charts
+## 鸣法起盘
 
-Pass `"鸣法"` to `pan()` to calculate a Mingfa chart:
+调用 `pan("鸣法")` 即可计算鸣法盘：
 
 ```typescript
 import { Qimen } from "kinqimen";
@@ -74,25 +74,24 @@ console.log(pan.anganPan["坤"]);   // "癸"
 console.log(pan.anzhiPan["坤"]);   // "巳"
 ```
 
-The rules follow [deminzhang/qimen-go](https://github.com/deminzhang/qimen-go/tree/4d3f58fa0f401b5b3a337f119138e99e90685dda/xuan)
-at commit `4d3f58fa0f401b5b3a337f119138e99e90685dda`:
+起盘规则参考 [deminzhang/qimen-go](https://github.com/deminzhang/qimen-go/tree/4d3f58fa0f401b5b3a337f119138e99e90685dda/xuan)
+的提交 `4d3f58fa0f401b5b3a337f119138e99e90685dda`，具体约定如下：
 
-- Ju selection uses Chabu. Stars and doors always fly forward through palace numbers 1–9.
-- All nine palaces participate. Tianrui (`芮`) and Tianqin (`禽`) remain separate, and the door plate includes the middle door (`中`). There is no center-palace hosting.
-- Earth stems, heaven stems, gods, and hidden stems/branches fly forward in Yang Dun and backward in Yin Dun.
-- Yang gods use `符蛇阴合勾常雀地天`; Yin gods use `符蛇阴合虎常玄地天`. `常` denotes Taichang (`太常`).
-- `anganPan` contains the upstream `PathGan`; `anzhiPan` contains `PathZhi`. The ten hours of the xun fly across nine palaces, so the final `癸` replaces `甲` at the starting palace.
+- 采用拆补定局，九星、九门均按一至九宫的数序顺飞。
+- 九宫均参与排布，中宫不寄其他宫。天芮（`芮`）与天禽（`禽`）分别落宫，门盘包含中门（`中`）。
+- 地盘干、天盘干、九神及暗干支按阳遁顺飞、阴遁逆飞。
+- 阳遁九神为 `符蛇阴合勾常雀地天`，阴遁九神为 `符蛇阴合虎常玄地天`，其中 `常` 表示太常。
+- `anganPan` 对应上游的 `PathGan`，`anzhiPan` 对应 `PathZhi`。一旬十个时辰飞过九宫，最后的 `癸` 会覆盖起宫的 `甲`。
 
-`HourMingfaPan` includes the existing common metadata and auxiliary fields, with complete
-`Record<Gong, ...>` plates for all seven layers. Middle-door pressure uses the Earth element.
-Calendar calculations use this package's `tyme4ts` adapter and its existing 23:00 day rollover.
-Go layout comparisons use identical Ju and hour pillars; the calendar backend is not replaced.
+`HourMingfaPan` 包含通用排盘信息和辅助字段，七层盘面均为覆盖九宫的 `Record<Gong, ...>`。
+中门按五行属土计算门迫。历法采用本库的 `tyme4ts` 适配器，23:00 子时按次日处理。
+与 Go 实现核对盘面时，使用相同的局数和时柱。
 
-Calling `pan()` or `pan("拆补")` returns `HourChabuPan`.
-For a variable method, use the exported `QimenMethod` and `HourQimenPan` union and narrow on `pan.method`.
-Unsupported methods throw `QimenInputError`.
+调用 `pan()` 或 `pan("拆补")` 返回 `HourChabuPan`。
+排盘方式为变量时，可使用导出的 `QimenMethod` 和 `HourQimenPan` 联合类型，通过 `pan.method` 判断结果类型。
+传入不支持的排盘方式时，会抛出 `QimenInputError`。
 
-## API
+## 接口说明
 
 ### `new Qimen(input)`
 
@@ -120,7 +119,7 @@ type QimenDateInput = {
 
 ### `qimen.pan(method?)`
 
-Returns a Chabu rotating chart by default. `pan("鸣法")` returns a Mingfa flying chart as documented above.
+默认返回拆补转盘；传入 `"鸣法"` 时返回鸣法飞盘，具体规则见上方“鸣法起盘”。
 
 ```typescript
 import { Qimen } from "kinqimen";
@@ -256,8 +255,8 @@ bun run build
 bun run prepublishOnly
 ```
 
-## License
+## 许可证
 
 [GPL-3.0-only](LICENSE)
 
-The adapted Mingfa code includes the upstream MIT notice in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+鸣法实现所采用的上游 MIT 授权声明见 [第三方授权说明](THIRD_PARTY_NOTICES.md)。

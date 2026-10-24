@@ -2,7 +2,7 @@
 
 # 堅奇门 · KinQiMen
 
-TypeScript 时家奇门排盘库，支持拆补转盘与鸣法飞盘。
+TypeScript 时家奇门排盘库，支持转盘与鸣法飞盘，均可使用拆补定局。
 
 [![npm](https://img.shields.io/npm/v/kinqimen?label=npm&logo=npm)](https://www.npmjs.com/package/kinqimen)
 [![许可证](https://img.shields.io/github/license/kentang2017/kinqimen?label=%E8%AE%B8%E5%8F%AF%E8%AF%81)](LICENSE)
@@ -11,7 +11,7 @@ TypeScript 时家奇门排盘库，支持拆补转盘与鸣法飞盘。
 
 ## 功能
 
-- 支持时家奇门拆补转盘与鸣法飞盘。
+- 盘式与定局方法独立选择，转盘和鸣法飞盘均支持拆补定局。
 - 支持干支、旬首旬空、局日、排局、节气、值符值使。
 - 输出天盘、地盘、门盘、星盘、神盘和暗干，鸣法额外输出暗支。
 - 输出天乙、马星、长生运、门迫、击刑等辅助信息。
@@ -44,16 +44,21 @@ const qimen = new Qimen({
   minute: 30,
 });
 
-const pan = qimen.pan();
+const pan = qimen.pan({ type: "转盘", juMethod: "拆补" });
 
+console.log(pan.type);     // "转盘"
+console.log(pan.juMethod); // "拆补"
 console.log(pan.ju);
 console.log(pan.zhifuZhishi);
 console.log(pan.anganPan);
 ```
 
+`type` 选择盘式，`juMethod` 选择定局方法。
+两项均可省略，`qimen.pan()` 默认使用 `{ type: "转盘", juMethod: "拆补" }`。
+
 ## 鸣法起盘
 
-调用 `pan("鸣法")` 即可计算鸣法盘：
+选择 `type: "鸣法"` 即可计算鸣法盘，定局方法同样使用拆补：
 
 ```typescript
 import { Qimen } from "kinqimen";
@@ -65,9 +70,10 @@ const pan: HourMingfaPan = new Qimen({
   day: 13,
   hour: 9,
   minute: 31,
-}).pan("鸣法");
+}).pan({ type: "鸣法", juMethod: "拆补" });
 
-console.log(pan.method);           // "鸣法"
+console.log(pan.type);             // "鸣法"
+console.log(pan.juMethod);         // "拆补"
 console.log(pan.ju);               // "阴四局上"
 console.log(pan.starPan["中"]);    // "任"
 console.log(pan.anganPan["坤"]);   // "癸"
@@ -87,15 +93,11 @@ console.log(pan.anzhiPan["坤"]);   // "巳"
 中门按五行属土计算门迫。历法采用本库的 `tyme4ts` 适配器，23:00 子时按次日处理。
 与 Go 实现核对盘面时，使用相同的局数和时柱。
 
-调用 `pan()` 或 `pan("拆补")` 返回 `HourChabuPan`。
-排盘方式为变量时，可使用导出的 `QimenMethod` 和 `HourQimenPan` 联合类型，通过 `pan.method` 判断结果类型。
-传入不支持的排盘方式时，会抛出 `QimenInputError`。
-
 ## 接口说明
 
 ### `new Qimen(input)`
 
-创建一个排盘实例。
+使用公历日期和时间创建排盘实例。
 
 ```typescript
 type QimenDateInput = {
@@ -107,7 +109,7 @@ type QimenDateInput = {
 };
 ```
 
-参数必须是公历时间：
+参数要求：
 
 - `year`：整数年份。
 - `month`：1-12。
@@ -117,15 +119,36 @@ type QimenDateInput = {
 
 输入不合法时会抛出 `QimenInputError`。
 
-### `qimen.pan(method?)`
+### `qimen.pan(options?)`
 
-默认返回拆补转盘；传入 `"鸣法"` 时返回鸣法飞盘，具体规则见上方“鸣法起盘”。
+计算并直接返回盘面，配置仅对当前调用生效。
+
+```typescript
+type QimenPanType = "转盘" | "鸣法";
+type QimenJuMethod = "拆补";
+
+interface QimenPanOptions {
+  type?: QimenPanType;
+  juMethod?: QimenJuMethod;
+}
+```
+
+| 参数 | 含义 | 默认值 |
+| --- | --- | --- |
+| `type` | 盘式，支持 `"转盘"` 和 `"鸣法"` | `"转盘"` |
+| `juMethod` | 定局方法，目前支持 `"拆补"` | `"拆补"` |
+
+调用 `pan()` 或 `pan({ type: "转盘" })` 返回 `HourZhuanPan`。
+调用 `pan({ type: "鸣法" })` 返回 `HourMingfaPan`。
+配置以 `QimenPanOptions` 类型的变量传入时，返回 `HourQimenPan` 联合类型；
+通过 `pan.type` 判断具体盘式后，即可访问对应字段，例如鸣法的 `anzhiPan`。
+传入不支持的盘式或定局方法时，会抛出 `QimenInputError`。
 
 ```typescript
 import { Qimen } from "kinqimen";
-import type { HourChabuPan } from "kinqimen";
+import type { HourZhuanPan } from "kinqimen";
 
-const pan: HourChabuPan = new Qimen({
+const pan: HourZhuanPan = new Qimen({
   year: 2024,
   month: 6,
   day: 15,
@@ -134,11 +157,12 @@ const pan: HourChabuPan = new Qimen({
 }).pan();
 ```
 
-返回字段包括：
+转盘返回字段包括：
 
 ```typescript
-type HourChabuPan = {
-  method: "拆补";
+type HourZhuanPan = {
+  type: "转盘";
+  juMethod: "拆补";
   ganzhi: string;
   xunHead: string;
   xunKong: { dayKong: string; hourKong: string };
@@ -169,11 +193,25 @@ type HourChabuPan = {
 
 其中 `Gong` 和 `EightGong` 可从包中作为 TypeScript 类型导入。
 
+### 旧接口迁移
+
+| 旧接口 | 新接口 |
+| --- | --- |
+| `pan("拆补")` | `pan({ type: "转盘", juMethod: "拆补" })` 或 `pan()` |
+| `pan("鸣法")` | `pan({ type: "鸣法", juMethod: "拆补" })` |
+| `pan.method` | `pan.type` 表示盘式，`pan.juMethod` 表示定局方法 |
+| `QimenMethod` | `QimenPanType` 和 `QimenJuMethod` |
+| `HourChabuPan` | `HourZhuanPan` |
+
+不再接受字符串参数。`pan()` 保持默认的排盘计算方式，
+返回的 JSON 使用 `type` 和 `juMethod` 两个字段替代原来的 `method`。
+
 ## 输出示例
 
 ```json
 {
-  "method": "拆补",
+  "type": "转盘",
+  "juMethod": "拆补",
   "ganzhi": "甲辰年庚午月庚戌日癸未时",
   "xunHead": "甲戌",
   "xunKong": { "dayKong": "寅卯", "hourKong": "申酉" },
@@ -204,7 +242,7 @@ type HourChabuPan = {
 }
 ```
 
-`长生运` 实际会返回每个天干对应的十二长生明细，上面仅做结构省略。
+`changshengYun` 实际会返回每个天干对应的十二长生明细，上面仅做结构省略。
 
 ## 类型导出
 
@@ -218,8 +256,10 @@ import {
 
 import type {
   QimenDateInput,
-  QimenMethod,
-  HourChabuPan,
+  QimenPanType,
+  QimenJuMethod,
+  QimenPanOptions,
+  HourZhuanPan,
   HourMingfaPan,
   HourQimenPan,
   MingfaDoor,

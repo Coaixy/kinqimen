@@ -28,7 +28,14 @@ export type Star = "蓬" | "任" | "冲" | "辅" | "英" | "禽" | "柱" | "心"
 // 八神
 export type God = "符" | "蛇" | "阴" | "合" | "勾" | "雀" | "地" | "天" | "虎" | "玄";
 
-export type QimenMethod = "拆补" | "鸣法";
+export type QimenPanType = "转盘" | "鸣法";
+export type QimenJuMethod = "拆补";
+
+export interface QimenPanOptions {
+  type?: QimenPanType;
+  juMethod?: QimenJuMethod;
+}
+
 export type MingfaDoor = Door | "中";
 export type MingfaStar = Star | "芮";
 export type MingfaGod = God | "常";
@@ -73,9 +80,8 @@ export interface JixingItem {
   gan: string;
 }
 
-// 时家拆补盘返回结构
-export interface HourChabuPan {
-  method: "拆补";
+interface HourQimenPanBase {
+  juMethod: QimenJuMethod;
   ganzhi: string;
   xunHead: string;
   xunKong: XunKong;
@@ -84,12 +90,6 @@ export interface HourChabuPan {
   jieqi: string;
   zhifuZhishi: ZhifuZhishi;
   tianyi: string;
-  skyPan: Partial<Record<Gong, string>>;
-  earthPan: Record<Gong, string>;
-  doorPan: Partial<Record<EightGong, string>>;
-  starPan: Partial<Record<EightGong, string>>;
-  godPan: Partial<Record<EightGong, string>>;
-  anganPan: Record<Gong, string>;
   maXing: MaXing;
   changshengYun: {
     skyPan: Record<string, ChangshengItem>;
@@ -99,8 +99,18 @@ export interface HourChabuPan {
   jixing: JixingItem[];
 }
 
-export interface HourMingfaPan extends Omit<HourChabuPan, "method"> {
-  method: "鸣法";
+export interface HourZhuanPan extends HourQimenPanBase {
+  type: "转盘";
+  skyPan: Partial<Record<Gong, string>>;
+  earthPan: Record<Gong, string>;
+  doorPan: Partial<Record<EightGong, string>>;
+  starPan: Partial<Record<EightGong, string>>;
+  godPan: Partial<Record<EightGong, string>>;
+  anganPan: Record<Gong, string>;
+}
+
+export interface HourMingfaPan extends HourQimenPanBase {
+  type: "鸣法";
   skyPan: Record<Gong, Tiangan>;
   earthPan: Record<Gong, Tiangan>;
   doorPan: Record<Gong, MingfaDoor>;
@@ -110,7 +120,7 @@ export interface HourMingfaPan extends Omit<HourChabuPan, "method"> {
   anzhiPan: Record<Gong, Dizhi>;
 }
 
-export type HourQimenPan = HourChabuPan | HourMingfaPan;
+export type HourQimenPan = HourZhuanPan | HourMingfaPan;
 
 // 错误类型
 export class QimenInputError extends Error {

@@ -1,8 +1,8 @@
 /**
- * Hour-based Qimen charts using Chabu or Mingfa plate rules.
+ * Hour-based Qimen charts with independent chart types and ju methods.
  */
 
-import type { QimenDateInput, QimenMethod, HourChabuPan, HourMingfaPan, HourQimenPan } from "./types";
+import type { QimenDateInput, QimenPanOptions, HourZhuanPan, HourMingfaPan, HourQimenPan } from "./types";
 import { QimenInputError } from "./types";
 import type { CalendarAdapter } from "./calendar/adapter";
 import { Tyme4tsCalendarAdapter } from "./calendar/tyme-adapter";
@@ -92,13 +92,21 @@ export class Qimen {
     this.calendar = calendar ?? new Tyme4tsCalendarAdapter();
   }
 
-  /** Build a Chabu rotating chart by default, or a Mingfa flying chart. */
-  pan(method?: "拆补"): HourChabuPan;
-  pan(method: "鸣法"): HourMingfaPan;
-  pan(method: QimenMethod): HourQimenPan;
-  pan(method: QimenMethod = "拆补"): HourQimenPan {
-    if (method !== "拆补" && method !== "鸣法") {
-      throw new QimenInputError(`不支持的排盘方式: ${method}`);
+  /** Build a chart, defaulting to rotating plates with Chabu ju calculation. */
+  pan(options?: QimenPanOptions & { type?: "转盘" }): HourZhuanPan;
+  pan(options: QimenPanOptions & { type: "鸣法" }): HourMingfaPan;
+  pan(options?: QimenPanOptions): HourQimenPan;
+  pan(options: QimenPanOptions = {}): HourQimenPan {
+    if (typeof options !== "object" || options === null || Array.isArray(options)) {
+      throw new QimenInputError("排盘参数必须是配置对象");
+    }
+
+    const { type = "转盘", juMethod = "拆补" } = options;
+    if (type !== "转盘" && type !== "鸣法") {
+      throw new QimenInputError(`不支持的盘式: ${type}`);
+    }
+    if (juMethod !== "拆补") {
+      throw new QimenInputError(`不支持的定局方法: ${juMethod}`);
     }
 
     const { year, month, day, hour, minute } = this.input;
@@ -107,22 +115,26 @@ export class Qimen {
     const gz = this.calendar.getGanzhi(year, month, day, hour, minute);
     const jieqiName = getCurrentJieqiName(year, month, day, hour, minute, this.calendar);
 
-    // Phase 4: 拆补定局
     const juString = qimenJuChaibu(gz, jieqiName);
     const juDay = qimenJuDay(gz.day);
     const xunHead = shun(gz.hour);
     const { dayKong, hourKong } = calcDayKongShiKong(gz.day, gz.hour);
 
-    if (method === "鸣法") {
+    const common = {
+      juMethod,
+      ganzhi: formatGanzhi(gz),
+      xunHead,
+      xunKong: { dayKong, hourKong },
+      juDay,
+      ju: juString,
+      jieqi: jieqiName,
+    };
+
+    if (type === "鸣法") {
       const layers = buildMingfaPan(juString, gz.hour);
       return {
-        method,
-        ganzhi: formatGanzhi(gz),
-        xunHead,
-        xunKong: { dayKong, hourKong },
-        juDay,
-        ju: juString,
-        jieqi: jieqiName,
+        type,
+        ...common,
         ...layers,
         tianyi: calcTianyi(layers.zhifuZhishi),
         maXing: calcAllMa(gz.day, gz.hour),
@@ -156,13 +168,8 @@ export class Qimen {
     const jixing = calcAllJixing(earthPan, skyPan);
 
     return {
-      method: "拆补",
-      ganzhi: formatGanzhi(gz),
-      xunHead,
-      xunKong: { dayKong, hourKong },
-      juDay,
-      ju: juString,
-      jieqi: jieqiName,
+      type,
+      ...common,
       zhifuZhishi,
       tianyi,
       skyPan,

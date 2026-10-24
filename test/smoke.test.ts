@@ -60,7 +60,8 @@ describe("Qimen 脚手架测试", () => {
     const pan = qimen.pan();
 
     expect(pan).toEqual({
-      method: "拆补",
+      type: "转盘",
+      juMethod: "拆补",
       ganzhi: "甲辰年庚午月庚戌日癸未时",
       xunHead: "甲戌",
       xunKong: {

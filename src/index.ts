@@ -1,13 +1,15 @@
 /**
- * kinqimen - hour-based Chabu and Mingfa Qimen charts.
+ * kinqimen - hour-based rotating and Mingfa Qimen charts.
  */
 
 export { Qimen } from "./qimen";
 
 export type {
   QimenDateInput,
-  QimenMethod,
-  HourChabuPan,
+  QimenPanType,
+  QimenJuMethod,
+  QimenPanOptions,
+  HourZhuanPan,
   HourMingfaPan,
   HourQimenPan,
   MingfaDoor,

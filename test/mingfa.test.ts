@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { Qimen } from "../src";
-import type { QimenMethod, ZhifuZhishi } from "../src";
+import type { ZhifuZhishi } from "../src";
 import { buildMingfaPan } from "../src/core/mingfa";
 import { calcMenpo } from "../src/core/menpo";
 import { EIGHT_GUA } from "../src/data/tables";
@@ -27,9 +27,10 @@ describe("Mingfa charts", () => {
       day: 15,
       hour: 14,
       minute: 30,
-    }).pan("鸣法");
+    }).pan({ type: "鸣法", juMethod: "拆补" });
 
-    expect(pan.method).toBe("鸣法");
+    expect(pan.type).toBe("鸣法");
+    expect(pan.juMethod).toBe("拆补");
     expect(pan.ju).toBe("阳六局上");
     expect(pan.zhifuZhishi).toEqual({
       zhifuGan: ["甲戌", "己"],
@@ -44,7 +45,7 @@ describe("Mingfa charts", () => {
   });
 
   test("matches the upstream Yin chart through the public API", () => {
-    const pan = new Qimen({ year: 2024, month: 12, day: 13, hour: 9, minute: 31 }).pan("鸣法");
+    const pan = new Qimen({ year: 2024, month: 12, day: 13, hour: 9, minute: 31 }).pan({ type: "鸣法" });
 
     expect(pan.ganzhi).toBe("甲辰年丙子月辛亥日癸巳时");
     expect(pan.jieqi).toBe("大雪");
@@ -122,15 +123,10 @@ describe("Mingfa charts", () => {
   });
 
   test("23:00 advances the day and the Chabu yuan using the existing calendar contract", () => {
-    const lateZi = new Qimen({ year: 2024, month: 6, day: 18, hour: 23, minute: 0 }).pan("鸣法");
-    const midnight = new Qimen({ year: 2024, month: 6, day: 19, hour: 0, minute: 0 }).pan("鸣法");
+    const lateZi = new Qimen({ year: 2024, month: 6, day: 18, hour: 23, minute: 0 }).pan({ type: "鸣法" });
+    const midnight = new Qimen({ year: 2024, month: 6, day: 19, hour: 0, minute: 0 }).pan({ type: "鸣法" });
 
     expect(lateZi.ju).toBe("阳三局中");
     expect(lateZi).toEqual(midnight);
-  });
-
-  test("rejects unsupported methods instead of returning another chart", () => {
-    const qimen = new Qimen({ year: 2024, month: 6, day: 15, hour: 14, minute: 30 });
-    expect(() => qimen.pan("unknown" as QimenMethod)).toThrow("不支持的排盘方式");
   });
 });
